@@ -130,8 +130,11 @@ export class SuperSwapsService {
   private addonPath: string
 
   private constructor() {
-    // Using your specific QuickNode Optimism endpoint with SuperSwaps add-on
-    this.baseUrl = process.env.QUIKNODE_OPTIMISM_RPC || "https://chaotic-special-wave.optimism.quiknode.pro/eaeba5d35e62ea8cc36f9a5fe195f070b69cc33f/"
+    // Using QuickNode Optimism endpoint with SuperSwaps add-on
+    this.baseUrl = process.env.QUIKNODE_OPTIMISM_RPC
+    if (!this.baseUrl) {
+      throw new Error("QUIKNODE_OPTIMISM_RPC environment variable is required for SuperSwaps service")
+    }
     this.addonPath = "addon/1050/v1" // SuperSwaps add-on path
   }
 

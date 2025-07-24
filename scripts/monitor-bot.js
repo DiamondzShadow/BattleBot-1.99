@@ -29,10 +29,10 @@ async function checkBotStatus(botType = 'trading-bot') {
     
     if (data.stats) {
       console.log(`💰 Stats:`)
-      console.log(`   - Total Profit: ${data.stats.totalProfit?.toFixed(4) || '0'} ETH`)
-      console.log(`   - Win Rate: ${data.stats.winRate?.toFixed(1) || '0'}%`)
-      console.log(`   - Cycle Count: ${data.stats.cycleCount || 'N/A'}`)
-      console.log(`   - Error Count: ${data.stats.errorCount || 0}`)
+      console.log(`   - Total Profit: $${data.stats.totalProfit?.toFixed(2) || '0'}`)
+      console.log(`   - Success Rate: ${data.stats.successRate?.toFixed(1) || '0'}%`)
+      console.log(`   - Total Trades: ${(data.stats.successfulTrades || 0) + (data.stats.failedTrades || 0)}`)
+      console.log(`   - Active Trades: ${data.stats.activeTrades || 0}`)
     }
     
     return data.status?.isRunning

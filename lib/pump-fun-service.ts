@@ -535,7 +535,7 @@ export class PumpFunService {
 
 // Helper function to get Pump.fun service instance
 export function getPumpFunService(): PumpFunService {
-  return PumpFunService.instance || PumpFunService.getInstance()
+  return PumpFunService.getInstance()
 }
 
 // Pump.fun constants

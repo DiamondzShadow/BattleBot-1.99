@@ -9,14 +9,31 @@ import { getSuperSwapsService, OPTIMISM_TOKENS } from "./superswaps-service"
 
 // Configuration for the production trading bot
 interface ProductionBotConfig {
-  profitThresholdUSD: number
-  tradeIntervalSec: number
+  interval: number
   maxConcurrentTrades: number
-  enabled: boolean
-  dryRun: boolean
-  maxInvestmentPerTrade: number
+  profitThreshold: number
   stopLossPercentage: number
   takeProfitPercentage: number
+  maxInvestmentPerTrade: number
+  supportedChains: string[]
+}
+
+interface TradingStatistics {
+  successfulTrades: number
+  failedTrades: number
+  totalProfit: number
+  cycleCount: number
+  lastCycleTime: string
+  uptime: number
+  aiSignalsUsed: number
+  aiAccuracy: number
+  moonshotsDetected: number
+  superSwapsSavings: number
+  arbitrageOpportunities: number
+  frontrunningBlocked: number
+  sandwichAttacksPrevented: number
+  avgExecutionTime: number
+  gasSavings: number
 }
 
 // Trade status enum
@@ -55,30 +72,43 @@ export interface ProductionTrade {
 // Production trading bot service
 export class ProductionTradingBotService {
   private static instance: ProductionTradingBotService
-  private config: ProductionBotConfig
-  private activeTrades: Map<string, ProductionTrade> = new Map()
-  private tradeHistory: ProductionTrade[] = []
-  private listeners: Set<(update: any) => void> = new Set()
   private isRunning = false
-  private interval: NodeJS.Timeout | null = null
-  private cycleCount = 0
+  private activeTrades: Map<string, any> = new Map()
+  private intervalId: NodeJS.Timeout | null = null
+  private config: ProductionBotConfig
   private lastCycleTime = 0
   private errorCount = 0
   private maxErrors = 10
   private tradingSignals = getTradingSignalsService()
   private superSwaps = getSuperSwapsService()
+  private statistics: TradingStatistics = {
+    successfulTrades: 0,
+    failedTrades: 0,
+    totalProfit: 0,
+    cycleCount: 0,
+    lastCycleTime: new Date().toISOString(),
+    uptime: 0,
+    aiSignalsUsed: 0,
+    aiAccuracy: 0,
+    moonshotsDetected: 0,
+    superSwapsSavings: 0,
+    arbitrageOpportunities: 0,
+    frontrunningBlocked: 0,
+    sandwichAttacksPrevented: 0,
+    avgExecutionTime: 0,
+    gasSavings: 0
+  }
 
   private constructor() {
     // Production configuration with QuickNode optimization
     this.config = {
-      profitThresholdUSD: 5,
-      tradeIntervalSec: 90, // 1.5 minutes with premium endpoints
-      maxConcurrentTrades: 8, // More trades with better infrastructure
-      enabled: true,
-      dryRun: false,
-      maxInvestmentPerTrade: 0.01, // 0.01 ETH/SOL per trade
-      stopLossPercentage: -8, // Tighter stop loss with better data
-      takeProfitPercentage: 12, // More reasonable take profit
+      interval: 90000, // 1.5 minutes (optimized for QuickNode rate limits)
+      maxConcurrentTrades: 8, // Conservative with premium endpoints
+      profitThreshold: 5, // $5 USD minimum profit
+      stopLossPercentage: 8, // 8% stop loss (tighter with better data)
+      takeProfitPercentage: 12, // 12% take profit (more realistic)
+      maxInvestmentPerTrade: 500, // $500 max per trade
+      supportedChains: ["solana", "optimism", "polygon", "bsc"]
     }
   }
 

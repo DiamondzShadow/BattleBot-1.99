@@ -114,8 +114,11 @@ export class TradingSignalsService {
   private addonPath: string
 
   private constructor() {
-    // Using your specific QuickNode endpoint with Trading Signals add-on
-    this.baseUrl = process.env.QUIKNODE_SOLANA_RPC || "https://black-still-butterfly.solana-mainnet.quiknode.pro/ed845667579c683613d3f8b9e397ddc46239ce76/"
+    // Using QuickNode endpoint with Trading Signals add-on
+    this.baseUrl = process.env.QUIKNODE_SOLANA_RPC
+    if (!this.baseUrl) {
+      throw new Error("QUIKNODE_SOLANA_RPC environment variable is required for Trading Signals service")
+    }
     this.addonPath = "addon/1047/v2" // Trading Signals add-on path
   }
 

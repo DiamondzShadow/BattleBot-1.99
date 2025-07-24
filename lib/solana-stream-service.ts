@@ -3,7 +3,6 @@ import { getThirdWebService } from "./thirdweb-service"
 
 // Solana RPC URL
 const SOLANA_RPC_URL = process.env.QUIKNODE_SOLANA_RPC || "https://api.mainnet-beta.solana.com"
-const SOLANA_WSS_URL = process.env.QUIKNODE_SOLANA_WSS || "wss://api.mainnet-beta.solana.com"
 
 // Stream ID
 const STREAM_ID = "69b603ec-275d-4a0f-98c9-f5434824a87d"

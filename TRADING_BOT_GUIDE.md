@@ -13,6 +13,30 @@ Your trading bot now includes **institutional-grade AI trading signals** and **a
 
 ---
 
+## 🚨 **SECURITY FIRST - PROTECT YOUR API KEYS**
+
+### ⚠️ **CRITICAL: Never commit API keys to source control!**
+
+1. **Copy `.env.example` to `.env.local`**:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. **Replace ALL placeholder values with your actual QuickNode endpoints**:
+   ```env
+   # ❌ DON'T use the example values!
+   # ✅ Replace with YOUR actual QuickNode endpoints:
+   QUIKNODE_SOLANA_RPC=https://your-actual-endpoint.solana-mainnet.quiknode.pro/your-api-key/
+   QUIKNODE_OPTIMISM_RPC=https://your-actual-endpoint.optimism.quiknode.pro/your-api-key/
+   ```
+
+3. **Add `.env.local` to your `.gitignore`**:
+   ```bash
+   echo ".env.local" >> .gitignore
+   ```
+
+---
+
 ## 📊 System Architecture
 
 ### Development Bot (Testing & Analysis)
@@ -39,6 +63,10 @@ Your trading bot now includes **institutional-grade AI trading signals** and **a
 # Install dependencies
 pnpm install
 
+# Configure your environment (REQUIRED!)
+cp .env.example .env.local
+# Edit .env.local with YOUR actual QuickNode endpoints
+
 # Start development server
 pnpm dev
 
@@ -57,7 +85,7 @@ pnpm run bot:restart
 # Real-time monitoring
 pnpm run bot:monitor
 
-# Test all QuickNode endpoints
+# Test all QuickNode endpoints (requires .env.local setup)
 pnpm run test:endpoints
 
 # Test AI Trading Signals
@@ -123,6 +151,11 @@ curl -X GET "http://localhost:3000/api/pump-fun/opportunities?action=trending&li
    - ✅ Real-time trending token detection
    - ✅ Live stream monitoring for viral opportunities
    - ✅ Early-stage meme coin analysis
+
+9. **Security Hardening**
+   - ✅ Removed all hardcoded API keys
+   - ✅ Environment variable validation
+   - ✅ Proper error handling for missing configuration
 
 ## 🧠 AI Trading Intelligence
 
@@ -241,33 +274,30 @@ interface EnhancedBotStatistics {
 
 ### Common Issues & Solutions
 
-**1. AI Signals Not Loading**
+**1. Environment Variables Not Set**
+```bash
+# Error: "QUIKNODE_SOLANA_RPC environment variable is required"
+# Solution: Copy .env.example to .env.local and add your actual endpoints
+cp .env.example .env.local
+# Edit .env.local with your QuickNode endpoints
+```
+
+**2. AI Signals Not Loading**
 ```bash
 # Check Trading Signals service
 curl -X GET "http://localhost:3000/api/trading-signals/analyze"
 
-# Verify QuickNode add-on is active
+# Verify environment variables are set
 echo $TRADING_SIGNALS_ENABLED
 ```
 
-**2. SuperSwaps Optimization Failing**
+**3. SuperSwaps Optimization Failing**
 ```bash
-# Test Optimism endpoint
-curl -X GET "https://chaotic-special-wave.optimism.quiknode.pro/eaeba5d35e62ea8cc36f9a5fe195f070b69cc33f/addon/1050/v1/pools/detailed?limit=2"
+# Check if Optimism endpoint is configured
+echo $QUIKNODE_OPTIMISM_RPC
 
-# Check service status
+# Test the service
 curl -X GET "http://localhost:3000/api/superswaps/pools"
-```
-
-**3. MEV Protection Not Working**
-```bash
-# Test MEV service
-curl -X GET "http://localhost:3000/api/mev-protection/analyze?demo=swap"
-
-# Check Solana RPC connection
-curl -X POST "https://black-still-butterfly.solana-mainnet.quiknode.pro/ed845667579c683613d3f8b9e397ddc46239ce76/" \
-  -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"getHealth"}'
 ```
 
 **4. Bot Stopping Unexpectedly**
@@ -286,13 +316,13 @@ pnpm run bot:restart && pnpm run bot:monitor
 
 ### Required Environment Variables
 ```bash
-# ✅ Core QuickNode Endpoints
-QUIKNODE_SOLANA_RPC=https://black-still-butterfly.solana-mainnet.quiknode.pro/ed845667579c683613d3f8b9e397ddc46239ce76/
-QUIKNODE_OPTIMISM_RPC=https://chaotic-special-wave.optimism.quiknode.pro/eaeba5d35e62ea8cc36f9a5fe195f070b69cc33f/
+# ✅ Core QuickNode Endpoints (REPLACE WITH YOUR ACTUAL ENDPOINTS!)
+QUIKNODE_SOLANA_RPC=https://your-endpoint.solana-mainnet.quiknode.pro/your-key/
+QUIKNODE_OPTIMISM_RPC=https://your-endpoint.optimism.quiknode.pro/your-key/
 
-# ✅ Enhanced APIs  
-JUPITER_SWAP_API=https://jupiter-swap-api.quiknode.pro/7A1B06086CF5/
-PUMPFUN_API_URL=https://jupiter-swap-api.quiknode.pro/A793DD57C684/
+# ✅ Enhanced APIs (REPLACE WITH YOUR ACTUAL ENDPOINTS!)
+JUPITER_SWAP_API=https://your-jupiter-endpoint.quiknode.pro/your-key/
+PUMPFUN_API_URL=https://your-pumpfun-endpoint.quiknode.pro/your-key/
 
 # ✅ Feature Flags
 TRADING_SIGNALS_ENABLED=true
@@ -304,7 +334,7 @@ PUMP_FUN_ENABLED=true
 
 ### Verification Commands
 ```bash
-# Test all integrations
+# Test all integrations (requires proper .env.local setup)
 pnpm run test:endpoints
 
 # Verify AI signals
@@ -336,11 +366,12 @@ curl -X GET "http://localhost:3000/api/mev-protection/analyze?demo=transfer"
 
 ## 🚀 Next Steps
 
-1. **Monitor Performance:** Track AI signal accuracy and SuperSwaps savings
-2. **Optimize Parameters:** Adjust confidence thresholds based on results
-3. **Scale Trading:** Increase position sizes as performance proves consistent
-4. **Add Custom Strategies:** Build on top of the AI foundation
-5. **Expand Chains:** Add more networks as QuickNode adds support
+1. **Secure Setup:** Configure your `.env.local` with actual QuickNode endpoints
+2. **Monitor Performance:** Track AI signal accuracy and SuperSwaps savings
+3. **Optimize Parameters:** Adjust confidence thresholds based on results
+4. **Scale Trading:** Increase position sizes as performance proves consistent
+5. **Add Custom Strategies:** Build on top of the AI foundation
+6. **Expand Chains:** Add more networks as QuickNode adds support
 
 Your trading bot is now equipped with **institutional-grade intelligence** and **professional-grade execution**. The combination of AI signals, MEV protection, and multi-DEX optimization gives you a significant edge in the competitive crypto trading landscape.
 
