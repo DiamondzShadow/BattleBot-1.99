@@ -1,6 +1,7 @@
 import { ethers } from "ethers"
 import { getCoinMarketCapService } from "./coinmarketcap-service"
 import { getSolanaService } from "./solana-service"
+import { getWalletService } from "./wallet-service"
 import { SUPPORTED_CHAINS } from "./trading-service"
 
 // Configuration for the trading bot
@@ -57,6 +58,7 @@ export class TradingBotService {
   private listeners: Set<(update: any) => void> = new Set()
   private isRunning = false
   private interval: NodeJS.Timeout | null = null
+  private walletService = getWalletService()
 
   private constructor() {
     // Default configuration - optimized for multi-chain trading
