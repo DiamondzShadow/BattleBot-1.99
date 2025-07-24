@@ -10,16 +10,18 @@ Copy `.env.example` to `.env.local` and fill in your QuickNode endpoints:
 cp .env.example .env.local
 ```
 
-**Required Environment Variables:**
+**Your Complete QuickNode Configuration:**
 ```env
-# Your upgraded QuickNode endpoints
-QUIKNODE_SOLANA_RPC=https://your-endpoint.solana-mainnet.quiknode.pro/your-api-key/
-QUIKNODE_POLYGON_RPC=https://your-endpoint.matic.quiknode.pro/your-api-key/
-QUIKNODE_BSC_RPC=https://your-endpoint.bsc.quiknode.pro/your-api-key/
+# QuickNode Premium Endpoints - All Chains
+QUIKNODE_SOLANA_RPC=https://black-still-butterfly.solana-mainnet.quiknode.pro/ed845667579c683613d3f8b9e397ddc46239ce76/
+QUIKNODE_POLYGON_RPC=https://tiniest-quick-shard.matic.quiknode.pro/e7a88a2e263965ea751216078e9c8223e27e7ca9/
+QUIKNODE_BSC_RPC=https://warmhearted-necessary-arm.bsc.quiknode.pro/5b1710b0e9f7bae6e68294641105e80c3df7834d/
+JUPITER_SWAP_API=https://jupiter-swap-api.quiknode.pro/7A1B06086CF5/
 
-# Backup providers (recommended)
-ALCHEMY_API_KEY=your-alchemy-api-key
-INFURA_API_KEY=your-infura-api-key
+# Additional configuration
+TRADING_BOT_ENABLED=true
+PRODUCTION_BOT_ENABLED=true
+DRY_RUN_MODE=false
 ```
 
 ### 2. Install Dependencies
@@ -48,6 +50,9 @@ pnpm run bot:stop
 
 # Restart all bots
 pnpm run bot:restart
+
+# Test all QuickNode endpoints
+pnpm run test:endpoints
 ```
 
 ## 🔧 Fixes Applied
@@ -179,19 +184,20 @@ pnpm run bot:restart
 
 ## 🎯 Bot Configuration
 
-### Trading Bot (Development)
-- **Interval:** 60 seconds
-- **Max Trades:** 10
+### Trading Bot (Development) - OPTIMIZED
+- **Interval:** 45 seconds (faster with QuickNode)
+- **Max Trades:** 15 (multi-chain support)
 - **Profit Threshold:** $3 USD
-- **Focus:** All supported chains
+- **Focus:** Solana + Polygon + BSC
+- **Real Jupiter API Integration** ✅
 
-### Production Bot (Live Trading)
-- **Interval:** 120 seconds (2 minutes)
-- **Max Trades:** 5
+### Production Bot (Live Trading) - OPTIMIZED
+- **Interval:** 90 seconds (1.5 minutes)
+- **Max Trades:** 8 (better infrastructure)
 - **Profit Threshold:** $5 USD
-- **Stop Loss:** -10%
-- **Take Profit:** +15%
-- **Focus:** Solana (most reliable)
+- **Stop Loss:** -8% (tighter with better data)
+- **Take Profit:** +12% (more realistic)
+- **Focus:** Multi-chain with premium endpoints
 
 ## 📊 Monitoring Dashboard
 

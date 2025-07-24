@@ -64,16 +64,16 @@ export class ProductionTradingBotService {
   private maxErrors = 10
 
   private constructor() {
-    // Production configuration with more conservative settings
+    // Production configuration with QuickNode optimization
     this.config = {
       profitThresholdUSD: 5,
-      tradeIntervalSec: 120, // 2 minutes
-      maxConcurrentTrades: 5,
+      tradeIntervalSec: 90, // 1.5 minutes with premium endpoints
+      maxConcurrentTrades: 8, // More trades with better infrastructure
       enabled: true,
       dryRun: false,
       maxInvestmentPerTrade: 0.01, // 0.01 ETH/SOL per trade
-      stopLossPercentage: -10, // Stop loss at -10%
-      takeProfitPercentage: 15, // Take profit at +15%
+      stopLossPercentage: -8, // Tighter stop loss with better data
+      takeProfitPercentage: 12, // More reasonable take profit
     }
   }
 

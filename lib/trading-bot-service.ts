@@ -59,11 +59,11 @@ export class TradingBotService {
   private interval: NodeJS.Timeout | null = null
 
   private constructor() {
-    // Default configuration
+    // Default configuration - optimized for multi-chain trading
     this.config = {
       profitThresholdUSD: 3,
-      tradeIntervalSec: 60,
-      maxConcurrentTrades: 10,
+      tradeIntervalSec: 45, // Faster with premium QuickNode endpoints
+      maxConcurrentTrades: 15, // More trades across multiple chains
       riskLevels: {
         cold: { maxRisk: 1, minProfit: 1 },
         warm: { maxRisk: 2, minProfit: 2 },
