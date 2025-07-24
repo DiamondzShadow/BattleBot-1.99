@@ -56,6 +56,9 @@ pnpm run test:endpoints
 
 # Test Jupiter Metis integration
 curl -X GET "http://localhost:3000/api/jupiter-metis/quote?action=price"
+
+# Test MEV Protection capabilities
+curl -X GET "http://localhost:3000/api/mev-protection/analyze?demo=swap"
 ```
 
 ## 🔧 Fixes Applied
@@ -193,6 +196,7 @@ curl -X GET "http://localhost:3000/api/jupiter-metis/quote?action=price"
 - **Profit Threshold:** $3 USD
 - **Focus:** Solana + Polygon + BSC
 - **Jupiter Metis API Integration** ✅ (QuickNode Enhanced)
+- **MEV Protection & Recovery** ✅ (Anti-Frontrunning)
 
 ### Production Bot (Live Trading) - OPTIMIZED
 - **Interval:** 90 seconds (1.5 minutes)
