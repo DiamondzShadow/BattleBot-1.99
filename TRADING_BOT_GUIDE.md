@@ -59,6 +59,9 @@ curl -X GET "http://localhost:3000/api/jupiter-metis/quote?action=price"
 
 # Test MEV Protection capabilities
 curl -X GET "http://localhost:3000/api/mev-protection/analyze?demo=swap"
+
+# Test Pump.fun meme coin opportunities
+curl -X GET "http://localhost:3000/api/pump-fun/opportunities?action=trending&limit=3"
 ```
 
 ## 🔧 Fixes Applied
@@ -197,6 +200,7 @@ curl -X GET "http://localhost:3000/api/mev-protection/analyze?demo=swap"
 - **Focus:** Solana + Polygon + BSC
 - **Jupiter Metis API Integration** ✅ (QuickNode Enhanced)
 - **MEV Protection & Recovery** ✅ (Anti-Frontrunning)
+- **Pump.fun Meme Coin Integration** ✅ (Trending Tokens & Live Streams)
 
 ### Production Bot (Live Trading) - OPTIMIZED
 - **Interval:** 90 seconds (1.5 minutes)
