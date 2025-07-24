@@ -3,6 +3,7 @@ import { getSolanaService } from "./solana-service"
 
 // Solana RPC URL
 const SOLANA_RPC_URL = process.env.QUIKNODE_SOLANA_RPC || "https://api.mainnet-beta.solana.com"
+const JUPITER_API_URL = process.env.JUPITER_SWAP_API || "https://quote-api.jup.ag/v6"
 
 // Interface for Solana swap quote
 export interface SolanaSwapQuote {
