@@ -83,17 +83,33 @@ export class TradingBotService {
 
   // Start the trading bot
   public start(): void {
-    if (this.isRunning) return
+    if (this.isRunning) {
+      console.log("Trading bot is already running")
+      return
+    }
 
     this.isRunning = true
-    this.interval = setInterval(() => this.runTradingCycle(), this.config.tradeIntervalSec * 1000)
+    console.log("Starting trading bot...")
+    console.log(`Interval: ${this.config.tradeIntervalSec}s, Max trades: ${this.config.maxConcurrentTrades}`)
+    
+    // Start the trading cycle immediately
+    this.runTradingCycle()
+    
+    // Set up the interval for subsequent cycles
+    this.interval = setInterval(() => {
+      this.runTradingCycle()
+    }, this.config.tradeIntervalSec * 1000)
+
     console.log("Trading bot started")
     this.notifyListeners({ type: "bot_status", status: "started" })
   }
 
   // Stop the trading bot
   public stop(): void {
-    if (!this.isRunning) return
+    if (!this.isRunning) {
+      console.log("Trading bot is not running")
+      return
+    }
 
     this.isRunning = false
     if (this.interval) {
@@ -110,10 +126,11 @@ export class TradingBotService {
     console.log("Trading bot configuration updated:", this.config)
     this.notifyListeners({ type: "config_update", config: this.config })
 
-    // Restart the bot if it's running to apply new interval
-    if (this.isRunning) {
+    // Restart the bot if it's running and interval changed
+    if (this.isRunning && config.tradeIntervalSec) {
+      console.log("Restarting bot with new interval...")
       this.stop()
-      this.start()
+      setTimeout(() => this.start(), 1000)
     }
   }
 
@@ -137,22 +154,29 @@ export class TradingBotService {
     this.notifyListeners({ type: "cycle_start" })
 
     try {
-      // Check if we can open more trades
-      if (this.activeTrades.size >= this.config.maxConcurrentTrades) {
-        console.log("Maximum concurrent trades reached, skipping cycle")
+      // Check if bot should still be running
+      if (!this.isRunning) {
+        console.log("Bot stopped during cycle, aborting...")
         return
       }
 
-      // Get trending tokens for each chain
-      await this.analyzeTrendingTokens()
-
-      // Update active trades
+      // Update active trades first
       await this.updateActiveTrades()
+
+      // Check if we can open more trades
+      if (this.activeTrades.size >= this.config.maxConcurrentTrades) {
+        console.log(`Maximum concurrent trades reached (${this.config.maxConcurrentTrades}), skipping new trade analysis`)
+      } else {
+        // Get trending tokens for each chain
+        await this.analyzeTrendingTokens()
+      }
 
       this.notifyListeners({ type: "cycle_complete" })
     } catch (error) {
       console.error("Error in trading cycle:", error)
-      this.notifyListeners({ type: "cycle_error", error })
+      this.notifyListeners({ type: "cycle_error", error: error.message })
+      
+      // Don't stop the bot on individual cycle errors, just log and continue
     }
   }
 
