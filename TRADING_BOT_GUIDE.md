@@ -1,58 +1,70 @@
-# Trading Bot Setup & Troubleshooting Guide
+# 🚀 Advanced Trading Bot Guide - QuickNode Premium Edition
 
-## 🚀 Quick Setup
+## 🌟 Latest Upgrades: AI-Powered Trading Intelligence
 
-### 1. Environment Configuration
+Your trading bot now includes **institutional-grade AI trading signals** and **advanced DEX optimization** through QuickNode's premium add-ons:
 
-Copy `.env.example` to `.env.local` and fill in your QuickNode endpoints:
+### 🧠 New Intelligence Features
+- **Trading Signals (TokenMetrics AI)** ✅ Professional-grade buy/sell signals
+- **SuperSwaps (Multi-DEX Optimization)** ✅ Optimal routing across Optimism DEXs  
+- **Jupiter Metis API Integration** ✅ (QuickNode Enhanced)
+- **MEV Protection & Recovery** ✅ (Anti-Frontrunning)
+- **Pump.fun Meme Coin Integration** ✅ (Trending Tokens & Live Streams)
+
+---
+
+## 📊 System Architecture
+
+### Development Bot (Testing & Analysis)
+- **Interval:** 30 seconds
+- **Max Trades:** 5 (rapid testing)
+- **Chains:** Solana + Polygon
+- **Investment:** $10-100 per trade  
+- **Focus:** AI signal validation + MEV protection testing
+
+### Production Bot (Live Trading) - ENHANCED WITH AI
+- **Interval:** 90 seconds (1.5 minutes)
+- **Max Trades:** 15 (multi-chain support)
+- **Profit Threshold:** $3 USD
+- **Focus:** Solana + Polygon + BSC + **Optimism**
+- **AI Trading Signals** ✅ TokenMetrics integration
+- **SuperSwaps Optimization** ✅ Multi-DEX routing
+- **MEV Protection** ✅ Anti-frontrunning
+
+---
+
+## 🔥 Quick Start Commands
 
 ```bash
-cp .env.example .env.local
-```
-
-**Your Complete QuickNode Configuration:**
-```env
-# QuickNode Premium Endpoints - All Chains
-QUIKNODE_SOLANA_RPC=https://black-still-butterfly.solana-mainnet.quiknode.pro/ed845667579c683613d3f8b9e397ddc46239ce76/
-QUIKNODE_POLYGON_RPC=https://tiniest-quick-shard.matic.quiknode.pro/e7a88a2e263965ea751216078e9c8223e27e7ca9/
-QUIKNODE_BSC_RPC=https://warmhearted-necessary-arm.bsc.quiknode.pro/5b1710b0e9f7bae6e68294641105e80c3df7834d/
-JUPITER_SWAP_API=https://jupiter-swap-api.quiknode.pro/7A1B06086CF5/
-
-# Additional configuration
-TRADING_BOT_ENABLED=true
-PRODUCTION_BOT_ENABLED=true
-DRY_RUN_MODE=false
-```
-
-### 2. Install Dependencies
-
-```bash
+# Install dependencies
 pnpm install
-```
 
-### 3. Start the Application
-
-```bash
+# Start development server
 pnpm dev
-```
 
-### 4. Monitor Your Bots
-
-```bash
-# Check bot status
+# Monitor bot status
 pnpm run bot:status
 
 # Start all bots
 pnpm run bot:start
 
-# Stop all bots
+# Stop all bots  
 pnpm run bot:stop
 
 # Restart all bots
 pnpm run bot:restart
 
+# Real-time monitoring
+pnpm run bot:monitor
+
 # Test all QuickNode endpoints
 pnpm run test:endpoints
+
+# Test AI Trading Signals
+curl -X GET "http://localhost:3000/api/trading-signals/analyze?action=recommendations"
+
+# Test SuperSwaps optimization
+curl -X GET "http://localhost:3000/api/superswaps/pools?action=overview"
 
 # Test Jupiter Metis integration
 curl -X GET "http://localhost:3000/api/jupiter-metis/quote?action=price"
@@ -66,199 +78,270 @@ curl -X GET "http://localhost:3000/api/pump-fun/opportunities?action=trending&li
 
 ## 🔧 Fixes Applied
 
-### Problem: "Firing once then turning off"
+### ✅ Original Issues Resolved
+1. **Bot Stopping After One Cycle**
+   - ✅ Fixed interval management in `lib/trading-bot-service.ts`
+   - ✅ Added proper error handling and recovery
+   - ✅ Implemented graceful degradation for failed API calls
 
-**Root Causes Identified & Fixed:**
+2. **Production Bot Circular Import**  
+   - ✅ Completely rewrote `lib/production-trading-bot.ts`
+   - ✅ Fixed singleton pattern and dependency management
+   - ✅ Added proper module isolation
 
-1. **Production Bot Service - Circular Import Issue**
-   - ❌ **Was:** `lib/production-trading-bot.ts` had circular import
-   - ✅ **Fixed:** Complete rewrite with proper service implementation
-   - ✅ **Added:** Enhanced error handling and recovery mechanisms
+3. **Missing Dependencies**
+   - ✅ Added `node-fetch` and `bs58` to `package.json`
+   - ✅ Updated all import statements
+   - ✅ Fixed TypeScript type definitions
 
-2. **Interval Management Issues**
-   - ❌ **Was:** Bot intervals were not properly maintained
-   - ✅ **Fixed:** Robust interval management with proper cleanup
-   - ✅ **Added:** Immediate cycle execution + scheduled intervals
+### 🚀 Major Enhancements Added
 
-3. **Error Handling**
-   - ❌ **Was:** Single errors could stop the entire bot
-   - ✅ **Fixed:** Comprehensive error handling with recovery
-   - ✅ **Added:** Error counting and automatic restart mechanisms
+4. **AI Trading Signals Integration**
+   - ✅ TokenMetrics-powered analysis (QuickNode add-on 1047)
+   - ✅ Real-time buy/sell signals with confidence scoring
+   - ✅ Moonshot opportunity detection
+   - ✅ Portfolio-wide signal analysis
+   - ✅ Market alerts and breaking news
 
-4. **State Management**
-   - ❌ **Was:** No persistence or state validation
-   - ✅ **Fixed:** Proper state tracking and validation
-   - ✅ **Added:** Cycle counting and performance monitoring
+5. **SuperSwaps Multi-DEX Optimization**
+   - ✅ Optimal routing across Optimism DEXs (QuickNode add-on 1050) 
+   - ✅ Arbitrage opportunity detection
+   - ✅ Liquidity pool analysis and comparison
+   - ✅ Real-time savings calculation vs individual DEXs
 
-### Key Improvements
+6. **Jupiter Metis Enhanced Integration**
+   - ✅ Advanced Solana swap optimization
+   - ✅ Profitability analysis for token trading
+   - ✅ Risk assessment and confidence scoring
 
-1. **Enhanced Logging**
-   ```javascript
-   // Now you'll see detailed logs like:
-   "Starting production trading bot..."
-   "Interval: 120s, Max trades: 5"
-   "Running production trading cycle #1..."
-   "Production trading cycle #1 completed in 1234ms"
-   ```
+7. **MEV Protection & Recovery**
+   - ✅ Anti-frontrunning transaction sending
+   - ✅ Sandwich attack protection
+   - ✅ Multiple protection levels (standard/enhanced/maximum)
 
-2. **Better Error Recovery**
-   ```javascript
-   // Errors no longer kill the bot
-   // Instead they're logged and counted
-   // Bot only stops after 10 consecutive errors
-   ```
+8. **Pump.fun Meme Coin Integration**
+   - ✅ Real-time trending token detection
+   - ✅ Live stream monitoring for viral opportunities
+   - ✅ Early-stage meme coin analysis
 
-3. **QuickNode Priority**
-   ```javascript
-   // QuickNode endpoints are now prioritized:
-   const SOLANA_RPC_URLS = [
-     process.env.QUIKNODE_SOLANA_RPC, // Primary
-     process.env.ALCHEMY_SOLANA_RPC,  // Backup
-     "https://api.mainnet-beta.solana.com", // Fallback
-   ]
-   ```
+## 🧠 AI Trading Intelligence
 
-## 🐛 Troubleshooting
+### Trading Signals Service
+```typescript
+// Get AI-powered signals for a token
+const signals = await getTradingSignalsService().getTradingSignals(35987, 50, 1)
 
-### Bot Keeps Stopping After One Cycle
+// Comprehensive token analysis
+const analysis = await getTradingSignalsService().getTokenAnalysis(35987)
 
-**Check these in order:**
+// Find moonshot opportunities
+const moonshots = await getTradingSignalsService().findMoonshotOpportunities(75, "MEDIUM")
 
-1. **Verify Environment Variables**
-   ```bash
-   # Check if QuickNode endpoints are properly set
-   echo $QUIKNODE_SOLANA_RPC
-   ```
+// Get market alerts
+const alerts = await getTradingSignalsService().getMarketAlerts("HIGH")
+```
 
-2. **Check Server Logs**
-   ```bash
-   # Look for error patterns in Next.js logs
-   pnpm dev
-   # Watch for: "Error in trading cycle", "Too many errors"
-   ```
+### SuperSwaps Optimization
+```typescript
+// Get optimal swap route across all Optimism DEXs
+const quote = await getSuperSwapsService().getBestSwapRoute(
+  OPTIMISM_TOKENS.USDC,
+  OPTIMISM_TOKENS.VELO,
+  "1000000", // 1 USDC
+  0.5 // 0.5% slippage
+)
 
-3. **Test API Endpoints**
-   ```bash
-   # Test the bot API directly
-   curl http://localhost:3000/api/trading-bot/status
-   curl http://localhost:3000/api/production-bot/status
-   ```
+// Analyze liquidity across multiple DEXs
+const analysis = await getSuperSwapsService().analyzeMultiDEXLiquidity(
+  OPTIMISM_TOKENS.VELO,
+  "VELO"
+)
 
-4. **Monitor Bot Status**
-   ```bash
-   # Use the monitoring script
-   pnpm run bot:monitor
-   ```
+// Find arbitrage opportunities
+const opportunities = await getSuperSwapsService().findArbitrageOpportunities(
+  [OPTIMISM_TOKENS.VELO, OPTIMISM_TOKENS.OP],
+  0.01, // 1% minimum profit
+  0.01  // Max 0.01 ETH gas cost
+)
+```
 
-### Common Error Messages & Solutions
+## 🔒 Security & Risk Management
 
-#### "Failed to fetch trading bot status"
-- **Cause:** Next.js server not running or API routes not working
-- **Solution:** Restart the development server with `pnpm dev`
+### MEV Protection
+```typescript
+// Analyze MEV risks before trading
+const mevAnalysis = await getMEVProtectionService().analyzeMEVRisks(transaction)
 
-#### "Maximum concurrent trades reached"
-- **Cause:** Bot has reached the trade limit (normal behavior)
-- **Solution:** Either wait for trades to complete or increase `maxConcurrentTrades` in config
+// Send protected transaction
+const result = await getMEVProtectionService().sendProtectedTransaction(
+  transaction,
+  "enhanced", // Protection level
+  { skipPreflight: false, preflightCommitment: "finalized" }
+)
+```
 
-#### "Error analyzing trending tokens"
-- **Cause:** QuickNode/Solana RPC issues or rate limiting
-- **Solution:** Check your QuickNode endpoint status and rate limits
+### Risk Assessment Features
+- **AI Confidence Scoring:** 0-100% confidence on all signals
+- **Multi-Factor Risk Analysis:** Technical + Fundamental + Sentiment
+- **Liquidity Depth Analysis:** Real-time liquidity monitoring
+- **Impermanent Loss Calculations:** Automated risk assessment
+- **Correlation Risk Management:** Portfolio diversification scoring
 
-#### "Too many errors, stopping production bot"
-- **Cause:** Accumulated 10+ errors, safety mechanism activated
-- **Solution:** Check logs for root cause, fix, then restart bot
+## 📈 Performance Monitoring
 
-### Performance Optimization
+### Enhanced Bot Statistics
+```typescript
+interface EnhancedBotStatistics {
+  // Trading Performance
+  successfulTrades: number
+  failedTrades: number
+  totalProfit: number
+  winRate: number
+  
+  // AI Intelligence Metrics
+  aiSignalsUsed: number
+  aiAccuracy: number
+  moonshotsDetected: number
+  
+  // DEX Optimization Metrics
+  superSwapsSavings: number
+  arbitrageOpportunities: number
+  
+  // MEV Protection Stats
+  frontrunningBlocked: number
+  sandwichAttacksPrevented: number
+  
+  // Real-time Performance
+  avgExecutionTime: number
+  gasSavings: number
+}
+```
 
-1. **QuickNode Endpoint Optimization**
-   ```env
-   # Use your upgraded QuickNode endpoints for best performance
-   QUIKNODE_SOLANA_RPC=https://your-upgraded-endpoint.solana-mainnet.quiknode.pro/api-key/
-   ```
+### Monitoring Endpoints
+- **Bot Status:** `GET /api/production-bot/status`
+- **AI Signals:** `GET /api/trading-signals/analyze`
+- **DEX Analytics:** `GET /api/superswaps/pools?action=overview`
+- **MEV Protection:** `GET /api/mev-protection/analyze`
 
-2. **Trading Intervals**
-   ```javascript
-   // Adjust intervals based on your needs:
-   // - Development: 60-120 seconds
-   // - Production: 120-300 seconds (to avoid rate limits)
-   ```
+## 🌐 Multi-Chain Architecture
 
-3. **Concurrent Trades**
-   ```javascript
-   // Conservative settings:
-   maxConcurrentTrades: 3-5
-   // Aggressive settings:
-   maxConcurrentTrades: 10-20
-   ```
+### Supported Networks
+1. **Solana** (Primary) - Jupiter Metis + MEV Protection + Pump.fun
+2. **Optimism** (NEW) - SuperSwaps multi-DEX optimization  
+3. **Polygon** - Standard trading with enhanced signals
+4. **BSC** - Cross-chain arbitrage opportunities
 
-## 🎯 Bot Configuration
+### Chain-Specific Optimizations
+- **Solana:** Jupiter aggregation + MEV protection + Pump.fun trending
+- **Optimism:** Velodrome + Uniswap V3 + Sushiswap optimization
+- **Polygon:** QuickSwap + SushiSwap + Curve integration
+- **BSC:** PancakeSwap + Venus + Alpaca Finance
 
-### Trading Bot (Development) - OPTIMIZED
-- **Interval:** 45 seconds (faster with QuickNode)
-- **Max Trades:** 15 (multi-chain support)
-- **Profit Threshold:** $3 USD
-- **Focus:** Solana + Polygon + BSC
-- **Jupiter Metis API Integration** ✅ (QuickNode Enhanced)
-- **MEV Protection & Recovery** ✅ (Anti-Frontrunning)
-- **Pump.fun Meme Coin Integration** ✅ (Trending Tokens & Live Streams)
+## 🚨 Troubleshooting Guide
 
-### Production Bot (Live Trading) - OPTIMIZED
-- **Interval:** 90 seconds (1.5 minutes)
-- **Max Trades:** 8 (better infrastructure)
-- **Profit Threshold:** $5 USD
-- **Stop Loss:** -8% (tighter with better data)
-- **Take Profit:** +12% (more realistic)
-- **Focus:** Multi-chain with premium endpoints
+### Common Issues & Solutions
 
-## 📊 Monitoring Dashboard
+**1. AI Signals Not Loading**
+```bash
+# Check Trading Signals service
+curl -X GET "http://localhost:3000/api/trading-signals/analyze"
 
-Access your trading bots through the web interface:
+# Verify QuickNode add-on is active
+echo $TRADING_SIGNALS_ENABLED
+```
 
-- **Development Bot:** `/trading-bot` page
-- **Production Bot:** `/production-bot` page
-- **Live Trades:** `/trades` page
-- **Analytics:** `/dashboard` page
+**2. SuperSwaps Optimization Failing**
+```bash
+# Test Optimism endpoint
+curl -X GET "https://chaotic-special-wave.optimism.quiknode.pro/eaeba5d35e62ea8cc36f9a5fe195f070b69cc33f/addon/1050/v1/pools/detailed?limit=2"
 
-## 🔄 Bot Lifecycle
+# Check service status
+curl -X GET "http://localhost:3000/api/superswaps/pools"
+```
 
-1. **Start:** Bot initializes with configuration
-2. **Cycle:** Runs every X seconds (configurable)
-3. **Analysis:** Scans for trending tokens
-4. **Execution:** Makes trades based on profitability
-5. **Monitoring:** Updates existing trades
-6. **Risk Management:** Applies stop-loss/take-profit
+**3. MEV Protection Not Working**
+```bash
+# Test MEV service
+curl -X GET "http://localhost:3000/api/mev-protection/analyze?demo=swap"
 
-## 🛡️ Safety Features
+# Check Solana RPC connection
+curl -X POST "https://black-still-butterfly.solana-mainnet.quiknode.pro/ed845667579c683613d3f8b9e397ddc46239ce76/" \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getHealth"}'
+```
 
-1. **Error Recovery:** Continues running despite individual errors
-2. **Rate Limiting:** Respects API rate limits with fallbacks
-3. **Trade Limits:** Maximum concurrent trades to limit risk
-4. **Stop Loss:** Automatic loss limitation
-5. **Dry Run Mode:** Test without real trades
+**4. Bot Stopping Unexpectedly**
+```bash
+# Check bot status
+pnpm run bot:status
 
-## 📈 Next Steps
+# View recent logs
+tail -f logs/trading-bot.log
 
-1. **Add Real Trading Logic:**
-   - Integrate with DEX APIs (Jupiter, 1inch, etc.)
-   - Add wallet integration for actual trades
-   - Implement real price feeds
+# Restart with monitoring
+pnpm run bot:restart && pnpm run bot:monitor
+```
 
-2. **Enhanced Analytics:**
-   - Profit/loss tracking
-   - Performance metrics
-   - Risk analysis
+## 📋 Environment Setup Checklist
 
-3. **Notification System:**
-   - Discord/Telegram alerts
-   - Email notifications
-   - Real-time updates
+### Required Environment Variables
+```bash
+# ✅ Core QuickNode Endpoints
+QUIKNODE_SOLANA_RPC=https://black-still-butterfly.solana-mainnet.quiknode.pro/ed845667579c683613d3f8b9e397ddc46239ce76/
+QUIKNODE_OPTIMISM_RPC=https://chaotic-special-wave.optimism.quiknode.pro/eaeba5d35e62ea8cc36f9a5fe195f070b69cc33f/
 
-## 🆘 Still Having Issues?
+# ✅ Enhanced APIs  
+JUPITER_SWAP_API=https://jupiter-swap-api.quiknode.pro/7A1B06086CF5/
+PUMPFUN_API_URL=https://jupiter-swap-api.quiknode.pro/A793DD57C684/
 
-1. **Check the server logs** for specific error messages
-2. **Verify your QuickNode endpoints** are working
-3. **Test with a single bot first** before running both
-4. **Use the monitoring script** to track bot behavior
-5. **Check your environment variables** are properly set
+# ✅ Feature Flags
+TRADING_SIGNALS_ENABLED=true
+SUPERSWAPS_ENABLED=true
+JUPITER_METIS_ENABLED=true
+MEV_PROTECTION_ENABLED=true
+PUMP_FUN_ENABLED=true
+```
 
-The bots should now run continuously without stopping after one cycle. The enhanced error handling and recovery mechanisms ensure they keep running even when encountering individual errors.
+### Verification Commands
+```bash
+# Test all integrations
+pnpm run test:endpoints
+
+# Verify AI signals
+curl -X GET "http://localhost:3000/api/trading-signals/analyze?action=alerts"
+
+# Check DEX optimization
+curl -X GET "http://localhost:3000/api/superswaps/pools?action=detailed&limit=5"
+
+# Test MEV protection
+curl -X GET "http://localhost:3000/api/mev-protection/analyze?demo=transfer"
+```
+
+## 🎯 Success Metrics
+
+### Key Performance Indicators
+- **AI Signal Accuracy:** Target >80%
+- **SuperSwaps Savings:** Target >2% vs worst route
+- **MEV Protection Rate:** Target >95% sandwich attack prevention
+- **Overall Profitability:** Target >15% monthly returns
+- **Success Rate:** Target >70% profitable trades
+
+### Real-Time Dashboards
+- Trading performance: `http://localhost:3000/dashboard`
+- AI signals analysis: `http://localhost:3000/signals`
+- DEX optimization metrics: `http://localhost:3000/dex-analytics`
+- MEV protection stats: `http://localhost:3000/mev-dashboard`
+
+---
+
+## 🚀 Next Steps
+
+1. **Monitor Performance:** Track AI signal accuracy and SuperSwaps savings
+2. **Optimize Parameters:** Adjust confidence thresholds based on results
+3. **Scale Trading:** Increase position sizes as performance proves consistent
+4. **Add Custom Strategies:** Build on top of the AI foundation
+5. **Expand Chains:** Add more networks as QuickNode adds support
+
+Your trading bot is now equipped with **institutional-grade intelligence** and **professional-grade execution**. The combination of AI signals, MEV protection, and multi-DEX optimization gives you a significant edge in the competitive crypto trading landscape.
+
+**Happy trading! 🎯💰**
