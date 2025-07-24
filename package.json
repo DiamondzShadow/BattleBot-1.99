@@ -6,7 +6,13 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "bot:status": "node scripts/monitor-bot.js status",
+    "bot:start": "node scripts/monitor-bot.js start all",
+    "bot:stop": "node scripts/monitor-bot.js stop all",
+    "bot:restart": "node scripts/monitor-bot.js restart all",
+    "bot:monitor": "node scripts/monitor-bot.js",
+    "test:endpoints": "node scripts/test-endpoints.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -40,6 +46,7 @@
     "@solana/spl-token": "latest",
     "@solana/web3.js": "latest",
     "@tailwindcss/typography": "latest",
+    "@types/node-fetch": "^2.6.12",
     "autoprefixer": "^10.4.20",
     "axios": "latest",
     "class-variance-authority": "^0.7.1",
@@ -53,6 +60,8 @@
     "lucide-react": "^0.454.0",
     "next": "14.2.16",
     "next-themes": "latest",
+    "node-fetch": "^2.7.0",
+    "bs58": "^5.0.0",
     "react": "^18",
     "react-day-picker": "9.8.0",
     "react-dom": "^18",

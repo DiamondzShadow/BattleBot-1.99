@@ -1,4 +1,4 @@
-import { Connection } from "@solana/web3.js"
+import { Connection, PublicKey, Transaction } from "@solana/web3.js"
 import { getSolanaService } from "./solana-service"
 
 // Solana RPC URL

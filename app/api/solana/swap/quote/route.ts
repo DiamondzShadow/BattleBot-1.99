@@ -1,14 +1,51 @@
 import { type NextRequest, NextResponse } from "next/server"
 
+const JUPITER_API_URL = process.env.JUPITER_SWAP_API || "https://quote-api.jup.ag/v6"
+
 export async function POST(request: NextRequest) {
   try {
     const { fromToken, toToken, amount } = await request.json()
 
-    // In production, this would call the Jupiter API or QuickNode API
-    // For now, we'll simulate a swap quote
-    const simulatedQuote = simulateSwapQuote(fromToken, toToken, amount)
+    // Try to get real quote from Jupiter API via QuickNode
+    try {
+      const jupiterResponse = await fetch(
+        `${JUPITER_API_URL}/quote?inputMint=${fromToken}&outputMint=${toToken}&amount=${amount}&slippageBps=50`,
+        {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      )
 
+      if (jupiterResponse.ok) {
+        const jupiterQuote = await jupiterResponse.json()
+        
+        // Transform Jupiter response to our format
+        const quote = {
+          inputMint: fromToken,
+          outputMint: toToken,
+          inAmount: amount,
+          outAmount: parseInt(jupiterQuote.outAmount),
+          priceImpact: parseFloat(jupiterQuote.priceImpactPct || "0"),
+          estimatedGas: 5000, // Standard Solana transaction cost
+          swapTransaction: null, // Would need separate swap call
+          price: parseInt(jupiterQuote.outAmount) / amount,
+          route: jupiterQuote.routePlan || [],
+          source: "jupiter"
+        }
+        
+        console.log(`Jupiter quote: ${amount} ${fromToken} -> ${quote.outAmount} ${toToken}`)
+        return NextResponse.json(quote)
+      }
+    } catch (jupiterError) {
+      console.warn("Jupiter API error, falling back to simulation:", jupiterError)
+    }
+
+    // Fallback to simulated quote if Jupiter API fails
+    const simulatedQuote = simulateSwapQuote(fromToken, toToken, amount)
     return NextResponse.json(simulatedQuote)
+    
   } catch (error) {
     console.error("Error fetching Solana swap quote:", error)
     return NextResponse.json({ error: "Failed to fetch Solana swap quote" }, { status: 500 })
@@ -40,11 +77,15 @@ function simulateSwapQuote(fromToken: string, toToken: string, amount: number) {
   const estimatedGas = 5000 // Simplified gas estimate
 
   return {
+    inputMint: fromToken,
+    outputMint: toToken,
     inAmount: amount,
     outAmount,
     estimatedGas,
     swapTransaction: "base64_encoded_transaction_placeholder",
     price,
     route: [fromToken, "middleToken", toToken],
+    source: "simulated",
+    priceImpact: Math.abs((price - 1) * 100)
   }
 }
