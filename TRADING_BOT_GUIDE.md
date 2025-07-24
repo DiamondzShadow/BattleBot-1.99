@@ -53,6 +53,9 @@ pnpm run bot:restart
 
 # Test all QuickNode endpoints
 pnpm run test:endpoints
+
+# Test Jupiter Metis integration
+curl -X GET "http://localhost:3000/api/jupiter-metis/quote?action=price"
 ```
 
 ## 🔧 Fixes Applied
@@ -189,7 +192,7 @@ pnpm run test:endpoints
 - **Max Trades:** 15 (multi-chain support)
 - **Profit Threshold:** $3 USD
 - **Focus:** Solana + Polygon + BSC
-- **Real Jupiter API Integration** ✅
+- **Jupiter Metis API Integration** ✅ (QuickNode Enhanced)
 
 ### Production Bot (Live Trading) - OPTIMIZED
 - **Interval:** 90 seconds (1.5 minutes)

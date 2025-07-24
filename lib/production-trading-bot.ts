@@ -3,6 +3,7 @@ import { getCoinMarketCapService } from "./coinmarketcap-service"
 import { getSolanaService } from "./solana-service"
 import { SUPPORTED_CHAINS } from "./trading-service"
 import { getRpcProvider } from "./rpc-provider"
+import { getJupiterMetisService, COMMON_TOKENS } from "./jupiter-metis-service"
 
 // Configuration for the production trading bot
 interface ProductionBotConfig {
@@ -300,7 +301,7 @@ export class ProductionTradingBotService {
     return false
   }
 
-  // Analyze token profitability
+  // Analyze token profitability using Jupiter Metis
   private async analyzeTokenProfitability(tokenAddress: string, chain: string): Promise<{
     profitable: boolean
     profitPotential: number
@@ -308,24 +309,58 @@ export class ProductionTradingBotService {
     riskLevel: number
   } | null> {
     try {
-      // In production, this would use real market data and analysis
-      // For now, simulate realistic analysis
-      
-      const randomFactor = Math.random()
-      const profitable = randomFactor > 0.7 // 30% chance of profitable opportunity
-      const profitPotential = profitable ? Math.random() * 20 + 5 : Math.random() * 5 // 5-25% or 0-5%
-      const confidence = profitable ? Math.random() * 30 + 70 : Math.random() * 70 // 70-100% or 0-70%
-      const riskLevel = Math.floor(Math.random() * 5) + 1
+      if (chain === "solana") {
+        // Use Jupiter Metis for Solana tokens
+        const jupiterMetis = getJupiterMetisService()
+        
+        const analysis = await jupiterMetis.analyzeTokenProfitability(
+          tokenAddress,
+          this.config.maxInvestmentPerTrade * 1000000000, // Convert to lamports
+          {
+            maxSlippage: 10,
+            minProfitThreshold: 3,
+            checkLiquidity: true
+          }
+        )
 
-      return {
-        profitable,
-        profitPotential,
-        confidence,
-        riskLevel
+        console.log(`Jupiter Metis analysis for ${tokenAddress}:`, {
+          profitable: analysis.profitable,
+          confidence: analysis.confidence,
+          profitPotential: analysis.profitPotential,
+          recommendation: analysis.recommendation
+        })
+
+        return {
+          profitable: analysis.profitable,
+          profitPotential: analysis.profitPotential,
+          confidence: analysis.confidence,
+          riskLevel: analysis.riskLevel
+        }
+      } else {
+        // Fallback to simulation for other chains
+        const randomFactor = Math.random()
+        const profitable = randomFactor > 0.8 // More conservative for other chains
+        const profitPotential = profitable ? Math.random() * 15 + 3 : Math.random() * 3
+        const confidence = profitable ? Math.random() * 25 + 65 : Math.random() * 60
+        const riskLevel = Math.floor(Math.random() * 4) + 2 // Slightly higher risk
+
+        return {
+          profitable,
+          profitPotential,
+          confidence,
+          riskLevel
+        }
       }
     } catch (error) {
       console.error(`Error analyzing token profitability for ${tokenAddress}:`, error)
-      return null
+      
+      // Fallback to conservative analysis
+      return {
+        profitable: false,
+        profitPotential: 0,
+        confidence: 20,
+        riskLevel: 5
+      }
     }
   }
 
