@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 
 // CoinMarketCap API key
-const CMC_API_KEY = process.env.COINMARKETCAP_API_KEY || "22e35657-2bee-48d9-8d3e-ca2ccf8c8bd1"
+const CMC_API_KEY = process.env.COINMARKETCAP_API_KEY || ""
 const CMC_API_BASE_URL = "https://pro-api.coinmarketcap.com/v1"
 
 export async function POST(request: NextRequest, { params }: { params: { endpoint: string } }) {

@@ -2,7 +2,7 @@
 // This service handles token swaps on EVM chains using the 0x API
 
 // 0x API key
-const ZEROX_API_KEY = process.env.ZEROX_API_KEY || "00162373-e821-4441-983e-85bb2ad7c32b"
+const ZEROX_API_KEY = process.env.ZEROX_API_KEY || ""
 
 // 0x API base URLs for different chains
 const ZEROX_API_URLS: Record<number, string> = {

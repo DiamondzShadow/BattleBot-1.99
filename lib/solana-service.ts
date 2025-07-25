@@ -6,7 +6,7 @@ import axios from "axios"
 // Solana RPC URLs - with fallbacks (QuickNode first for best performance)
 const SOLANA_RPC_URLS = [
   process.env.QUIKNODE_SOLANA_RPC, // Primary QuickNode endpoint
-  process.env.ALCHEMY_SOLANA_RPC || "https://solana-mainnet.g.alchemy.com/v2/3g7LKkKWyUVcOndx1ZOUt6VLjFOhCPUg",
+  process.env.ALCHEMY_SOLANA_RPC || "",
   "https://api.mainnet-beta.solana.com", // Fallback
   "https://solana-api.projectserum.com", // Additional fallback
 ]

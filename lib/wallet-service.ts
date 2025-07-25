@@ -6,7 +6,7 @@ import bs58 from "bs58"
 const CHAIN_CONFIGS = {
   ethereum: {
     chainId: 1,
-    rpcUrl: process.env.QUIKNODE_ETHEREUM_RPC || process.env.ETHEREUM_RPC_URL || "https://eth-mainnet.nodereal.io/v1/your-nodereal-api-key",
+    rpcUrl: process.env.QUIKNODE_ETHEREUM_RPC || process.env.ETHEREUM_RPC_URL || "https://eth.llamarpc.com",
     privateKeyEnv: "ETHEREUM_PRIVATE_KEY"
   },
   polygon: {
