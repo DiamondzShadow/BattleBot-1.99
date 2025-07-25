@@ -9,6 +9,7 @@ import { getSuperSwapsService, OPTIMISM_TOKENS } from "./superswaps-service"
 
 // Configuration for the production trading bot
 interface ProductionBotConfig {
+  enabled: boolean
   interval: number
   maxConcurrentTrades: number
   profitThreshold: number
@@ -102,12 +103,13 @@ export class ProductionTradingBotService {
   private constructor() {
     // Production configuration with QuickNode optimization
     this.config = {
+      enabled: process.env.PRODUCTION_BOT_ENABLED === 'true',
       interval: 90000, // 1.5 minutes (optimized for QuickNode rate limits)
       maxConcurrentTrades: 8, // Conservative with premium endpoints
       profitThreshold: 5, // $5 USD minimum profit
-      stopLossPercentage: 8, // 8% stop loss (tighter with better data)
-      takeProfitPercentage: 12, // 12% take profit (more realistic)
-      maxInvestmentPerTrade: 500, // $500 max per trade
+      stopLossPercentage: parseInt(process.env.STOP_LOSS_PERCENTAGE || '8'), // Default 8% from env
+      takeProfitPercentage: parseInt(process.env.TAKE_PROFIT_PERCENTAGE || '12'), // Default 12% from env
+      maxInvestmentPerTrade: parseInt(process.env.MAX_INVESTMENT_PER_TRADE || '500'), // Default $500 from env
       supportedChains: ["solana", "optimism", "polygon", "bsc"]
     }
   }
@@ -137,7 +139,7 @@ export class ProductionTradingBotService {
     this.cycleCount = 0
     
     console.log("Starting production trading bot...")
-    console.log(`Interval: ${this.config.tradeIntervalSec}s, Max trades: ${this.config.maxConcurrentTrades}`)
+    console.log(`Interval: ${this.config.interval}s, Max trades: ${this.config.maxConcurrentTrades}`)
     
     // Start the trading cycle immediately
     this.runTradingCycle()
@@ -145,7 +147,7 @@ export class ProductionTradingBotService {
     // Set up the interval for subsequent cycles
     this.interval = setInterval(() => {
       this.runTradingCycle()
-    }, this.config.tradeIntervalSec * 1000)
+    }, this.config.interval * 1000)
 
     this.notifyListeners({ type: "bot_status", status: "started" })
   }
@@ -174,7 +176,7 @@ export class ProductionTradingBotService {
     this.notifyListeners({ type: "config_update", config: this.config })
 
     // Restart the bot if it's running and interval changed
-    if (this.isRunning && config.tradeIntervalSec) {
+    if (this.isRunning && config.interval) {
       console.log("Restarting bot with new interval...")
       this.stop()
       setTimeout(() => this.start(), 1000)

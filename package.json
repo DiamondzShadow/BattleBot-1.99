@@ -3,16 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
     "dev": "next dev",
-    "lint": "next lint",
+    "build": "next build",
     "start": "next start",
-    "bot:status": "node scripts/monitor-bot.js status",
-    "bot:start": "node scripts/monitor-bot.js start all",
-    "bot:stop": "node scripts/monitor-bot.js stop all",
-    "bot:restart": "node scripts/monitor-bot.js restart all",
-    "bot:monitor": "node scripts/monitor-bot.js",
-    "test:endpoints": "node scripts/test-endpoints.js"
+    "lint": "next lint",
+    "test:endpoints": "node scripts/test-endpoints.js",
+    "test:bot": "node scripts/test-trading-bot.js",
+    "monitor:bot": "node scripts/monitor-bot.js",
+    "validate:config": "node scripts/validate-config.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
