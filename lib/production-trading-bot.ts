@@ -100,16 +100,37 @@ export class ProductionTradingBotService {
   }
 
   private constructor() {
-    // Production configuration with QuickNode optimization
+    // Production configuration with QuickNode optimization - now configurable via environment
     this.config = {
-      interval: 90000, // 1.5 minutes (optimized for QuickNode rate limits)
-      maxConcurrentTrades: 8, // Conservative with premium endpoints
-      profitThreshold: 5, // $5 USD minimum profit
-      stopLossPercentage: 8, // 8% stop loss (tighter with better data)
-      takeProfitPercentage: 12, // 12% take profit (more realistic)
-      maxInvestmentPerTrade: 500, // $500 max per trade
-      supportedChains: ["solana", "optimism", "polygon", "bsc"]
+      interval: Number(process.env.BOT_INTERVAL_MS) || 90000, // 1.5 minutes (optimized for QuickNode rate limits)
+      maxConcurrentTrades: Number(process.env.MAX_CONCURRENT_TRADES) || 8, // Conservative with premium endpoints
+      profitThreshold: Number(process.env.PROFIT_THRESHOLD_USD) || 5, // $5 USD minimum profit
+      stopLossPercentage: Number(process.env.STOP_LOSS_PERCENTAGE) || 8, // Default 8% from env
+      takeProfitPercentage: Number(process.env.TAKE_PROFIT_PERCENTAGE) || 12, // Default 12% from env
+      maxInvestmentPerTrade: Number(process.env.MAX_INVESTMENT_PER_TRADE) || 500, // Default $500 from env
+      supportedChains: (process.env.SUPPORTED_CHAINS || "solana,optimism,polygon,bsc").split(",")
     }
+
+    // Validate critical configuration values
+    this.validateConfiguration()
+  }
+
+  private validateConfiguration(): void {
+    const { stopLossPercentage, takeProfitPercentage, maxInvestmentPerTrade } = this.config
+    
+    if (isNaN(stopLossPercentage) || stopLossPercentage <= 0 || stopLossPercentage > 50) {
+      throw new Error(`Invalid STOP_LOSS_PERCENTAGE: ${process.env.STOP_LOSS_PERCENTAGE}. Must be between 1-50.`)
+    }
+    
+    if (isNaN(takeProfitPercentage) || takeProfitPercentage <= 0 || takeProfitPercentage > 100) {
+      throw new Error(`Invalid TAKE_PROFIT_PERCENTAGE: ${process.env.TAKE_PROFIT_PERCENTAGE}. Must be between 1-100.`)
+    }
+    
+    if (isNaN(maxInvestmentPerTrade) || maxInvestmentPerTrade <= 0) {
+      throw new Error(`Invalid MAX_INVESTMENT_PER_TRADE: ${process.env.MAX_INVESTMENT_PER_TRADE}. Must be a positive number.`)
+    }
+
+    console.log('✅ Production bot configuration validated successfully')
   }
 
   public static getInstance(): ProductionTradingBotService {

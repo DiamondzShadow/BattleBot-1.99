@@ -176,32 +176,54 @@ function validateTradingConfig() {
 
 function validateRiskManagement() {
   const riskConfig = {
-    'STOP_LOSS_PERCENTAGE': { min: 1, max: 50 },
-    'TAKE_PROFIT_PERCENTAGE': { min: 1, max: 100 },
-    'MAX_SLIPPAGE_TOLERANCE': { min: 0.1, max: 20 }
+    'STOP_LOSS_PERCENTAGE': { min: 1, max: 50, default: 8 },
+    'TAKE_PROFIT_PERCENTAGE': { min: 1, max: 100, default: 12 },
+    'MAX_SLIPPAGE_TOLERANCE': { min: 0.1, max: 20, default: 5 },
+    'MAX_INVESTMENT_PER_TRADE': { min: 1, max: 10000, default: 500 }
   }
   
   const errors = []
   const warnings = []
   
-  Object.entries(riskConfig).forEach(([key, range]) => {
-    const value = parseFloat(process.env[key] || '0')
+  // Validate each risk parameter
+  Object.entries(riskConfig).forEach(([key, config]) => {
+    const envValue = process.env[key]
+    const value = parseFloat(envValue || config.default.toString())
     
-    if (isNaN(value) || value < range.min || value > range.max) {
-      errors.push(`${key} must be between ${range.min}% and ${range.max}%`)
+    // Check if the environment variable is set but not numeric
+    if (envValue && isNaN(parseFloat(envValue))) {
+      errors.push(`${key} is not a valid number: "${envValue}"`)
+      return
+    }
+    
+    // Check if the value is within acceptable range
+    if (isNaN(value) || value < config.min || value > config.max) {
+      errors.push(`${key} must be between ${config.min} and ${config.max} (current: ${value})`)
     }
   })
   
-  // Risk warnings
-  const stopLoss = parseFloat(process.env.STOP_LOSS_PERCENTAGE || '0')
-  const takeProfit = parseFloat(process.env.TAKE_PROFIT_PERCENTAGE || '0')
-  
-  if (stopLoss > 20) {
-    warnings.push('Stop loss > 20% is very high risk')
-  }
-  
-  if (takeProfit < stopLoss) {
-    warnings.push('Take profit should be higher than stop loss')
+  // Additional risk analysis (only if no parsing errors)
+  if (errors.length === 0) {
+    const stopLoss = parseFloat(process.env.STOP_LOSS_PERCENTAGE || '8')
+    const takeProfit = parseFloat(process.env.TAKE_PROFIT_PERCENTAGE || '12')
+    const maxInvestment = parseFloat(process.env.MAX_INVESTMENT_PER_TRADE || '500')
+    
+    console.log('\n📊 Risk Assessment:')
+    console.log(`   Stop Loss: ${stopLoss}% ${stopLoss > 15 ? '⚠️  High risk!' : '✅'}`)
+    console.log(`   Take Profit: ${takeProfit}% ${takeProfit < 10 ? '⚠️  Low target!' : '✅'}`)
+    console.log(`   Max Investment: $${maxInvestment} ${maxInvestment > 1000 ? '⚠️  High exposure!' : '✅'}`)
+    
+    if (stopLoss > 20) {
+      warnings.push('Stop loss > 20% is very high risk')
+    }
+    
+    if (takeProfit < stopLoss) {
+      warnings.push('Take profit should be higher than stop loss')
+    }
+    
+    if (maxInvestment > 1000) {
+      warnings.push('Max investment per trade > $1000 represents high capital exposure')
+    }
   }
   
   return {

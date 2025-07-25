@@ -13,6 +13,7 @@
     "bot:restart": "node scripts/monitor-bot.js restart all",
     "bot:monitor": "node scripts/monitor-bot.js",
     "test:endpoints": "node scripts/test-endpoints.js",
+    "test:bot": "node scripts/test-trading-bot.js",
     "validate:config": "node scripts/validate-config.js"
   },
   "dependencies": {
@@ -53,6 +54,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
+    "dotenv": "^16.4.5",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
     "ethers": "latest",

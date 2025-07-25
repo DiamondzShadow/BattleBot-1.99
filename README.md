@@ -158,6 +158,9 @@ pnpm run validate:config
 # Test API endpoints connectivity
 pnpm run test:endpoints
 
+# Test trading bot functionality (dry run)
+pnpm run test:bot
+
 # Should see all green checkmarks ✅
 ```
 
@@ -234,6 +237,18 @@ pnpm run bot:restart
 pnpm run bot:monitor
 ```
 
+### **Testing & Validation Commands**
+```bash
+# Comprehensive configuration validation
+pnpm run validate:config
+
+# Test API endpoints and connectivity
+pnpm run test:endpoints
+
+# Test trading bot functionality (dry run)
+pnpm run test:bot
+```
+
 ### **Testing Your Arsenal**
 ```bash
 # Test AI Trading Signals
@@ -294,9 +309,12 @@ Ready to make real money? Here's how to go from testing to earning:
 
 1. **Fund Your Wallets** - Add real crypto to your trading accounts
 2. **Set Your Risk Limits** - Adjust position sizes in `.env.local`
-3. **Enable Production Mode** - Switch `PRODUCTION_BOT_ENABLED=true`
-4. **Monitor Performance** - Use the real-time dashboard
-5. **Scale Up Gradually** - Start small, grow as confidence builds
+3. **Follow Deployment Checklist** - See `DEPLOYMENT_CHECKLIST.md` for comprehensive guide
+4. **Enable Production Mode** - Switch `PRODUCTION_BOT_ENABLED=true`
+5. **Monitor Performance** - Use the real-time dashboard
+6. **Scale Up Gradually** - Start small, grow as confidence builds
+
+📋 **For Production Deployment**: Follow the detailed checklist in `DEPLOYMENT_CHECKLIST.md` for secure, robust deployment.
 
 ---
 
