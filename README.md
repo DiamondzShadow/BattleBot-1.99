@@ -126,9 +126,12 @@ COINMARKETCAP_API_KEY=your-cmc-key
 ZEROX_API_KEY=your-0x-key
 ALCHEMY_API_KEY=your-alchemy-key
 
-# REQUIRED FOR ACTUAL TRADING (keep secure!)
+# REQUIRED FOR ACTUAL TRADING (keep secure in .env.local!)
+# See .env.example for the full list of wallet keys.
 SOLANA_PRIVATE_KEY=your-solana-private-key
+ETHEREUM_PRIVATE_KEY=0xyour-ethereum-private-key
 POLYGON_PRIVATE_KEY=0xyour-polygon-private-key
+OPTIMISM_PRIVATE_KEY=0xyour-optimism-private-key
 TRADING_BOT_ENABLED=true
 PRODUCTION_BOT_ENABLED=false
 ```
@@ -139,9 +142,16 @@ PRODUCTION_BOT_ENABLED=false
 
 ```env
 # Add these to .env.local for trading functionality
+# Core wallets (required)
 SOLANA_PRIVATE_KEY=your-actual-solana-private-key
+
+# EVM wallets (choose chains you want to trade on)
+ETHEREUM_PRIVATE_KEY=0xyour-actual-ethereum-private-key
 POLYGON_PRIVATE_KEY=0xyour-actual-polygon-private-key
 OPTIMISM_PRIVATE_KEY=0xyour-actual-optimism-private-key
+BSC_PRIVATE_KEY=0xyour-actual-bsc-private-key
+ARBITRUM_PRIVATE_KEY=0xyour-actual-arbitrum-private-key
+BASE_PRIVATE_KEY=0xyour-actual-base-private-key
 ```
 
 **🔒 Security Notes:**

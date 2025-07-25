@@ -8,6 +8,11 @@
 const fs = require('fs')
 const path = require('path')
 
+// Helper function to find missing or placeholder environment variables
+function findMissingVars(keys) {
+  return keys.filter(key => !process.env[key] || process.env[key].includes('your-'))
+}
+
 function validateConfig() {
   console.log('🔍 Validating Trading Bot Configuration...\n')
 
@@ -33,7 +38,7 @@ function validateConfig() {
 
   // Print summary
   console.log('\n📊 Configuration Validation Summary:')
-  console.log('='*50)
+  console.log('='.repeat(50))
   
   Object.entries(validationResults).forEach(([category, result]) => {
     const icon = result.valid ? '✅' : '❌'
@@ -66,7 +71,7 @@ function validateRpcEndpoints() {
   const required = ['QUIKNODE_SOLANA_RPC']
   const optional = ['QUIKNODE_OPTIMISM_RPC', 'QUIKNODE_POLYGON_RPC', 'QUIKNODE_BSC_RPC']
   
-  const missing = required.filter(key => !process.env[key] || process.env[key].includes('your-'))
+  const missing = findMissingVars(required)
   const warnings = []
   
   if (missing.length > 0) {
@@ -78,7 +83,7 @@ function validateRpcEndpoints() {
   }
   
   // Check optional endpoints
-  const missingOptional = optional.filter(key => !process.env[key] || process.env[key].includes('your-'))
+  const missingOptional = findMissingVars(optional)
   if (missingOptional.length > 0) {
     warnings.push(`Optional RPC endpoints not configured: ${missingOptional.join(', ')}`)
   }
@@ -92,9 +97,9 @@ function validateRpcEndpoints() {
 
 function validateWalletKeys() {
   const requiredWallets = ['SOLANA_PRIVATE_KEY']
-  const optionalWallets = ['POLYGON_PRIVATE_KEY', 'OPTIMISM_PRIVATE_KEY', 'BSC_PRIVATE_KEY']
+  const optionalWallets = ['ETHEREUM_PRIVATE_KEY', 'POLYGON_PRIVATE_KEY', 'OPTIMISM_PRIVATE_KEY', 'BSC_PRIVATE_KEY', 'ARBITRUM_PRIVATE_KEY', 'BASE_PRIVATE_KEY']
   
-  const missing = requiredWallets.filter(key => !process.env[key] || process.env[key].includes('your-'))
+  const missing = findMissingVars(requiredWallets)
   const warnings = []
   
   if (missing.length > 0) {
@@ -106,15 +111,15 @@ function validateWalletKeys() {
   }
   
   // Check optional wallets
-  const missingOptional = optionalWallets.filter(key => !process.env[key] || process.env[key].includes('your-'))
+  const missingOptional = findMissingVars(optionalWallets)
   if (missingOptional.length > 0) {
     warnings.push(`Optional wallet keys not configured: ${missingOptional.join(', ')}`)
   }
   
   // Validate key formats
   const solanaKey = process.env.SOLANA_PRIVATE_KEY
-  if (solanaKey && !solanaKey.startsWith('[') && solanaKey.length < 40) {
-    warnings.push('Solana private key format may be incorrect')
+  if (solanaKey && !solanaKey.startsWith('[') && (solanaKey.length < 80 || solanaKey.length > 90)) {
+    warnings.push('Solana private key format may be incorrect (should be 80-90 characters for base58 or JSON array format)')
   }
   
   return {
@@ -126,7 +131,7 @@ function validateWalletKeys() {
 
 function validateTradingConfig() {
   const requiredConfig = {
-    'TRADING_BOT_ENABLED': 'true',
+    'TRADING_BOT_ENABLED': ['true', 'false'],
     'PRODUCTION_BOT_ENABLED': ['true', 'false'],
     'MAX_TRADES_PER_DAY': (val) => !isNaN(val) && parseInt(val) > 0,
     'DEFAULT_INVESTMENT_AMOUNT': (val) => !isNaN(val) && parseFloat(val) > 0
@@ -157,6 +162,10 @@ function validateTradingConfig() {
   })
   
   // Safety checks
+  if (process.env.TRADING_BOT_ENABLED === 'false') {
+    warnings.push('Trading bot is DISABLED - set TRADING_BOT_ENABLED=true to enable trading')
+  }
+  
   if (process.env.PRODUCTION_BOT_ENABLED === 'true') {
     warnings.push('Production bot is ENABLED - ensure you are ready for live trading')
   }
@@ -239,7 +248,7 @@ function validateInfrastructure() {
   
   // Optional but recommended for production
   const recommended = ['SENTRY_DSN', 'LOG_LEVEL', 'JWT_SECRET']
-  const missing = recommended.filter(key => !process.env[key] || process.env[key].includes('your-'))
+  const missing = findMissingVars(recommended)
   
   if (missing.length > 0) {
     warnings.push(`Recommended for production: ${missing.join(', ')}`)
