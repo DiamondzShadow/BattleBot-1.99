@@ -127,7 +127,40 @@ ZEROX_API_KEY=your-0x-key
 ALCHEMY_API_KEY=your-alchemy-key
 ```
 
-### **Step 4: Test Your Setup**
+### **Step 4: Validate Your Configuration**
+
+Before running the bot, validate that all required settings are configured:
+
+```bash
+# Check all configurations
+pnpm run validate:config
+```
+
+This will check for:
+- ✅ Required wallet private keys
+- ✅ Trading bot settings
+- ✅ Risk management parameters
+- ✅ Infrastructure configuration (for production)
+
+**Example output:**
+```
+🔍 BattleBot Configuration Validator
+
+📋 Checking Required Configurations:
+✅ QUIKNODE_SOLANA_RPC: https://your-endpoint.solana-mainnet.quiknode.pro/...
+✅ SOLANA_PRIVATE_KEY: [REDACTED]
+✅ STOP_LOSS_PERCENTAGE: 8
+✅ TAKE_PROFIT_PERCENTAGE: 12
+
+🛡️ Risk Assessment:
+Stop Loss: 8% ✅
+Take Profit: 12% ✅
+Max Investment: $500 ✅
+
+✅ Configuration is valid!
+```
+
+### **Step 5: Test Your Setup**
 ```bash
 # Make sure everything's connected
 pnpm run test:endpoints
