@@ -1,9 +1,11 @@
-# 🔥💎 BATTLEBOT 1.99 - AI TRADING BEAST 💎🔥
+# 🔥💎 BATTLEBOT 1.99 - AI TRADING INTERFACE 💎🔥
 
 *When the markets sleep, we feast. When they wake, we're already winning.* 🚀
 
-## 🎯 **THE VISION**
-This ain't just a trading bot - this is your **digital street soldier** equipped with institutional-grade AI intelligence, QuickNode's premium blockchain infrastructure, and the hunger of a thousand bulls. We don't just trade crypto - **we dominate it**.
+## 🎯 **WHAT IS THIS?**
+A powerful **web-based trading interface** that connects to multiple blockchains for automated trading. This is NOT a smart contract or blockchain deployment - it's a Next.js web application that INTERACTS with blockchains through RPC endpoints.
+
+**In Simple Terms:** This runs on your computer/server and trades ON blockchains, not deployed TO blockchains.
 
 ---
 
@@ -44,27 +46,85 @@ pnpm install
 npm install
 ```
 
-### **Step 3: Secure Your Keys (NO ROOKIE MISTAKES!)**
+### **Step 3: Configure Your API Keys**
+
+The bot can run with public endpoints, but for best performance, get your own API keys:
+
 ```bash
 # Copy the template
 cp .env.example .env.local
 
-# Edit with YOUR QuickNode endpoints
-# ⚠️ NEVER share these - they're your keys to the kingdom!
+# Edit .env.local with your API keys
 ```
 
-**Your `.env.local` should look like:**
+#### **🔑 Essential API Keys (What Each Does)**
+
+| Service | Required For | Get It From | Free Tier |
+|---------|-------------|-------------|-----------|
+| **QuickNode Solana** | Solana trading, MEV protection | [quicknode.com](https://quicknode.com) | ✅ Yes |
+| **QuickNode Optimism** | SuperSwaps optimization | [quicknode.com](https://quicknode.com) | ✅ Yes |
+| **CoinMarketCap** | Real-time price data | [coinmarketcap.com/api](https://coinmarketcap.com/api) | ✅ 10k calls/month |
+| **0x API** | Multi-chain DEX aggregation | [0x.org/docs/api](https://0x.org/docs/api) | ✅ Yes |
+| **Alchemy** | Backup RPC, enhanced features | [alchemy.com](https://alchemy.com) | ✅ 300M compute units |
+
+#### **🚀 Quick Setup Guides**
+
+<details>
+<summary><b>QuickNode (5 minutes)</b></summary>
+
+1. Go to [quicknode.com](https://quicknode.com) and sign up
+2. Click "Create Endpoint"
+3. Select Solana Mainnet (and/or Optimism)
+4. Copy your HTTP endpoint URL
+5. Paste into `.env.local` as `QUIKNODE_SOLANA_RPC`
+</details>
+
+<details>
+<summary><b>CoinMarketCap (2 minutes)</b></summary>
+
+1. Visit [coinmarketcap.com/api](https://coinmarketcap.com/api)
+2. Click "Get Your API Key Now"
+3. Sign up for free account
+4. Copy API key from dashboard
+5. Add to `.env.local` as `COINMARKETCAP_API_KEY`
+</details>
+
+<details>
+<summary><b>0x API (3 minutes)</b></summary>
+
+1. Go to [0x.org/docs/api](https://0x.org/docs/api)
+2. Click "Get API Key"
+3. Fill out the form
+4. Check email for API key
+5. Add to `.env.local` as `ZEROX_API_KEY`
+</details>
+
+<details>
+<summary><b>Alchemy (5 minutes)</b></summary>
+
+1. Sign up at [alchemy.com](https://alchemy.com)
+2. Create new app
+3. Select Ethereum Mainnet
+4. Copy API key from dashboard
+5. Add to `.env.local` as `ALCHEMY_API_KEY`
+</details>
+
+#### **📋 Minimum Setup (Just Solana)**
 ```env
-# 🔑 YOUR QUICKNODE PREMIUM ENDPOINTS
+# This is all you need to start
+QUIKNODE_SOLANA_RPC=https://your-endpoint.solana-mainnet.quiknode.pro/your-key/
+```
+
+#### **💪 Full Power Setup**
+```env
+# Core endpoints for all features
 QUIKNODE_SOLANA_RPC=https://your-endpoint.solana-mainnet.quiknode.pro/your-key/
 QUIKNODE_OPTIMISM_RPC=https://your-endpoint.optimism.quiknode.pro/your-key/
-JUPITER_SWAP_API=https://your-jupiter-endpoint.quiknode.pro/your-key/
 
-# 🎯 BEAST MODE SETTINGS
-TRADING_SIGNALS_ENABLED=true
-SUPERSWAPS_ENABLED=true
-MEV_PROTECTION_ENABLED=true
-PUMP_FUN_ENABLED=true
+# Enhanced features (optional but recommended)
+COINMARKETCAP_API_KEY=your-cmc-key
+ZEROX_API_KEY=your-0x-key
+ALCHEMY_API_KEY=your-alchemy-key
 ```
 
 ### **Step 4: Test Your Setup**
@@ -82,6 +142,49 @@ pnpm dev
 
 # Open http://localhost:3000 and watch the magic happen
 ```
+
+---
+
+## 🗺️ **FEATURE MAP - What Works With Each API Key**
+
+### **Without Any API Keys (Public Endpoints Only)**
+- ✅ Basic UI and dashboard
+- ✅ View token information
+- ✅ Basic trading interface
+- ⚠️ Rate limited (may be slow)
+- ⚠️ No advanced features
+
+### **With QuickNode Solana RPC**
+- ✅ Fast Solana trading
+- ✅ Real-time token monitoring
+- ✅ MEV protection on Solana
+- ✅ Jupiter swap integration
+- ✅ Pump.fun meme coin detection
+
+### **With QuickNode Optimism RPC** 
+- ✅ SuperSwaps DEX optimization
+- ✅ Cross-DEX arbitrage
+- ✅ Best route finding
+- ✅ Optimism L2 trading
+
+### **With CoinMarketCap API**
+- ✅ Real-time price feeds
+- ✅ Market cap data
+- ✅ 24h volume tracking
+- ✅ Price change alerts
+- ✅ Trending tokens
+
+### **With 0x API**
+- ✅ Multi-chain DEX aggregation
+- ✅ Best price execution
+- ✅ Ethereum/Polygon/BSC swaps
+- ✅ Slippage protection
+
+### **With Alchemy API**
+- ✅ Enhanced RPC reliability
+- ✅ Faster blockchain queries
+- ✅ Historical data access
+- ✅ WebSocket connections
 
 ---
 
@@ -196,6 +299,31 @@ echo $TRADING_SIGNALS_ENABLED
 - Verify slippage settings
 - Monitor gas prices
 - Review error logs
+
+---
+
+## 🔧 **TROUBLESHOOTING API KEYS**
+
+### **Common Issues & Solutions**
+
+**"RPC request failed" or timeout errors**
+- ✅ Check your QuickNode endpoint URL is correct
+- ✅ Verify your API key hasn't expired
+- ✅ Try the public fallback: remove the API key to use public endpoints
+
+**"Unauthorized" or "Invalid API key"**
+- ✅ Double-check you copied the full API key
+- ✅ Make sure there are no extra spaces
+- ✅ Verify the API key is activated in your provider's dashboard
+
+**"Rate limit exceeded"**
+- ✅ You're using public endpoints - get your own API keys
+- ✅ Or you've hit your plan's limit - upgrade or wait
+
+**Features not working**
+- ✅ Check the Feature Map above to see which API key you need
+- ✅ Run `pnpm run test:endpoints` to verify connections
+- ✅ Check browser console for specific error messages
 
 ---
 

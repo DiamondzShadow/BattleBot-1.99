@@ -73,11 +73,11 @@ export class RpcProvider {
   private initializeRpcConfigs() {
     // BSC Configuration
     this.rpcConfigs.bsc = {
-      primary:
-        process.env.QUIKNODE_BSC_RPC ||
-        "https://warmhearted-lively-sound.bsc.quiknode.pro/2dd387d7cfdd038305166de2d284f0f6f9c2a325/",
+              primary:
+          process.env.QUIKNODE_BSC_RPC ||
+          "https://bsc-dataseed.binance.org/",
       fallbacks: [
-        `https://bsc-mainnet.nodereal.io/v1/${process.env.NODEREAL_API_KEY || "nodereal-api-key"}`,
+        `https://bsc-mainnet.nodereal.io/v1/${process.env.NODEREAL_API_KEY || ""}`,
         `https://bsc-dataseed.binance.org/`,
         `https://bsc-dataseed1.defibit.io/`,
       ],
@@ -87,12 +87,12 @@ export class RpcProvider {
 
     // Polygon Configuration
     this.rpcConfigs.polygon = {
-      primary:
-        process.env.QUIKNODE_POLYGON_RPC ||
-        "https://aged-blissful-seed.matic.quiknode.pro/6fa9a74b8b4bff34399ca7b29da7bf8686b69821",
+              primary:
+          process.env.QUIKNODE_POLYGON_RPC ||
+          "https://polygon-rpc.com",
       fallbacks: [
-        `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_API_KEY || "36db7db7f76140d680587b5e3535771d"}`,
-        `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY || "3g7LKkKWyUVcOndx1ZOUt6VLjFOhCPUg"}`,
+        `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_API_KEY || ""}`,
+        `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY || ""}`,
         `https://polygon-rpc.com`,
       ],
       lastUsed: Date.now(),
@@ -101,9 +101,9 @@ export class RpcProvider {
 
     // Arbitrum Configuration
     this.rpcConfigs.arbitrum = {
-      primary: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY || "36db7db7f76140d680587b5e3535771d"}`,
+      primary: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY || ""}`,
       fallbacks: [
-        `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY || "3g7LKkKWyUVcOndx1ZOUt6VLjFOhCPUg"}`,
+        `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY || ""}`,
         `https://arb1.arbitrum.io/rpc`,
       ],
       lastUsed: Date.now(),
@@ -112,9 +112,9 @@ export class RpcProvider {
 
     // Optimism Configuration
     this.rpcConfigs.optimism = {
-      primary: `https://optimism-mainnet.infura.io/v3/${process.env.INFURA_API_KEY || "36db7db7f76140d680587b5e3535771d"}`,
+      primary: `https://optimism-mainnet.infura.io/v3/${process.env.INFURA_API_KEY || ""}`,
       fallbacks: [
-        `https://opt-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY || "3g7LKkKWyUVcOndx1ZOUt6VLjFOhCPUg"}`,
+        `https://opt-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY || ""}`,
         `https://mainnet.optimism.io`,
       ],
       lastUsed: Date.now(),
@@ -123,9 +123,9 @@ export class RpcProvider {
 
     // Solana Configuration
     this.rpcConfigs.solana = {
-      primary:
-        process.env.QUIKNODE_SOLANA_RPC ||
-        "https://necessary-few-silence.solana-mainnet.quiknode.pro/9ae3907978824e583cfbf6c3a3c227dd54daaf93",
+              primary:
+          process.env.QUIKNODE_SOLANA_RPC ||
+          "https://api.mainnet-beta.solana.com",
       fallbacks: [`https://api.mainnet-beta.solana.com`, `https://solana-api.projectserum.com`],
       lastUsed: Date.now(),
       failCount: 0,
