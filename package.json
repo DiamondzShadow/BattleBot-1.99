@@ -12,7 +12,8 @@
     "bot:stop": "node scripts/monitor-bot.js stop all",
     "bot:restart": "node scripts/monitor-bot.js restart all",
     "bot:monitor": "node scripts/monitor-bot.js",
-    "test:endpoints": "node scripts/test-endpoints.js"
+    "test:endpoints": "node scripts/test-endpoints.js",
+    "validate:config": "node scripts/validate-config.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

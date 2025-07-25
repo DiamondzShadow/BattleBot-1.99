@@ -125,17 +125,43 @@ QUIKNODE_OPTIMISM_RPC=https://your-endpoint.optimism.quiknode.pro/your-key/
 COINMARKETCAP_API_KEY=your-cmc-key
 ZEROX_API_KEY=your-0x-key
 ALCHEMY_API_KEY=your-alchemy-key
+
+# REQUIRED FOR ACTUAL TRADING (keep secure!)
+SOLANA_PRIVATE_KEY=your-solana-private-key
+POLYGON_PRIVATE_KEY=0xyour-polygon-private-key
+TRADING_BOT_ENABLED=true
+PRODUCTION_BOT_ENABLED=false
 ```
 
-### **Step 4: Test Your Setup**
+### **Step 4: Configure Wallets for Trading (IMPORTANT!)**
+
+⚠️ **CRITICAL**: To actually execute trades, you need to add wallet private keys to `.env.local`:
+
+```env
+# Add these to .env.local for trading functionality
+SOLANA_PRIVATE_KEY=your-actual-solana-private-key
+POLYGON_PRIVATE_KEY=0xyour-actual-polygon-private-key
+OPTIMISM_PRIVATE_KEY=0xyour-actual-optimism-private-key
+```
+
+**🔒 Security Notes:**
+- Never commit `.env.local` to git (it's in `.gitignore`)
+- Use dedicated trading wallets with limited funds
+- Start with small amounts for testing
+- Keep private keys secure and backed up
+
+### **Step 5: Test Your Setup**
 ```bash
-# Make sure everything's connected
+# Validate all configuration (wallets, risk management, etc.)
+pnpm run validate:config
+
+# Test API endpoints connectivity
 pnpm run test:endpoints
 
 # Should see all green checkmarks ✅
 ```
 
-### **Step 5: Launch The Beast**
+### **Step 6: Launch The Beast**
 ```bash
 # Start the development server
 pnpm dev
