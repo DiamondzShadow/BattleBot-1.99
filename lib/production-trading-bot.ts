@@ -17,6 +17,7 @@ interface ProductionBotConfig {
   takeProfitPercentage: number
   maxInvestmentPerTrade: number
   supportedChains: string[]
+  dryRun?: boolean
 }
 
 interface TradingStatistics {
@@ -80,6 +81,9 @@ export class ProductionTradingBotService {
   private lastCycleTime = 0
   private errorCount = 0
   private maxErrors = 10
+  private cycleCount = 0
+  private tradeHistory: ProductionTrade[] = []
+  private listeners = new Set<(update: any) => void>()
   private tradingSignals = getTradingSignalsService()
   private superSwaps = getSuperSwapsService()
   private statistics: TradingStatistics = {
@@ -104,13 +108,13 @@ export class ProductionTradingBotService {
     // Production configuration with QuickNode optimization
     this.config = {
       enabled: process.env.PRODUCTION_BOT_ENABLED === 'true',
-      interval: 90000, // 1.5 minutes (optimized for QuickNode rate limits)
-      maxConcurrentTrades: 8, // Conservative with premium endpoints
-      profitThreshold: 5, // $5 USD minimum profit
+      interval: parseInt(process.env.BOT_INTERVAL_SECONDS || '90'), // Default 90 seconds from env
+      maxConcurrentTrades: parseInt(process.env.MAX_CONCURRENT_TRADES || '8'), // Default 8 from env
+      profitThreshold: parseFloat(process.env.PROFIT_THRESHOLD_USD || '5'), // Default $5 USD from env
       stopLossPercentage: parseInt(process.env.STOP_LOSS_PERCENTAGE || '8'), // Default 8% from env
       takeProfitPercentage: parseInt(process.env.TAKE_PROFIT_PERCENTAGE || '12'), // Default 12% from env
       maxInvestmentPerTrade: parseInt(process.env.MAX_INVESTMENT_PER_TRADE || '500'), // Default $500 from env
-      supportedChains: ["solana", "optimism", "polygon", "bsc"]
+      supportedChains: process.env.SUPPORTED_CHAINS ? process.env.SUPPORTED_CHAINS.split(',').map(chain => chain.trim()) : ["solana", "optimism", "polygon", "bsc"]
     }
   }
 
@@ -145,7 +149,7 @@ export class ProductionTradingBotService {
     this.runTradingCycle()
     
     // Set up the interval for subsequent cycles
-    this.interval = setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.runTradingCycle()
     }, this.config.interval * 1000)
 
@@ -160,9 +164,9 @@ export class ProductionTradingBotService {
     }
 
     this.isRunning = false
-    if (this.interval) {
-      clearInterval(this.interval)
-      this.interval = null
+    if (this.intervalId) {
+      clearInterval(this.intervalId)
+      this.intervalId = null
     }
     
     console.log("Production trading bot stopped")
