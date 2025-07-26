@@ -7,6 +7,9 @@
 
 const fetch = require('node-fetch')
 
+// Load environment variables from .env.local
+require('dotenv').config({ path: '.env.local' })
+
 // Test QuickNode endpoints and Jupiter API
 async function testEndpoints() {
   console.log('🔍 Testing QuickNode Endpoints and APIs...\n')
@@ -24,7 +27,11 @@ async function testEndpoints() {
   const missingEnvVars = []
   Object.entries(endpoints).forEach(([name, url]) => {
     if (!url) {
-      missingEnvVars.push(`QUIKNODE_${name.toUpperCase()}_RPC` + (name === 'jupiter' ? '' : ''))
+      if (name === 'jupiter') {
+        missingEnvVars.push('JUPITER_SWAP_API')
+      } else {
+        missingEnvVars.push(`QUIKNODE_${name.toUpperCase()}_RPC`)
+      }
     }
   })
 
