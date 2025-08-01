@@ -134,7 +134,7 @@ async function testEndpoints() {
 
   async function runPerformanceTest() {
     console.log('🚀 QuickNode Endpoint Performance Test')
-    console.log('=' * 50)
+    console.log('='.repeat(50))
     
     // Test Solana endpoint
     console.log('\n🟣 Testing Solana Endpoint...')

@@ -93,7 +93,7 @@ async function stopBot(botType = 'trading-bot') {
 
 async function monitorBots() {
   console.log('🤖 Trading Bot Monitor')
-  console.log('=' * 50)
+  console.log('='.repeat(50))
   
   // Check both bots
   const tradingBotRunning = await checkBotStatus('trading-bot')
