@@ -473,19 +473,19 @@ export class ProductionTradingBotService {
       }
       
       // Find arbitrage opportunities on Optimism
-      if (this.superSwaps.isAvailable()) {
-        const arbTokens = [OPTIMISM_TOKENS.VELO, OPTIMISM_TOKENS.OP, OPTIMISM_TOKENS.SNX]
-        const arbOpportunities = await this.superSwaps.findArbitrageOpportunities(arbTokens, 0.01, 0.005)
-        
-        if (arbOpportunities.length > 0) {
-          console.log(`⚡ Found ${arbOpportunities.length} arbitrage opportunities on Optimism`)
-          arbOpportunities.forEach(arb => {
-            console.log(`   ${arb.symbol}: ${arb.opportunity.profitPotential.toFixed(2)}% profit (${arb.opportunity.buyDEX} → ${arb.opportunity.sellDEX})`)
-          })
-        }
-      } else {
-        console.log(`⚡ Arbitrage opportunities: SuperSwaps not configured`)
-      }
+if (superSwapsAvailable) {
+  const arbTokens = [OPTIMISM_TOKENS.VELO, OPTIMISM_TOKENS.OP, OPTIMISM_TOKENS.SNX];
+  const arbOpportunities = await this.superSwaps.findArbitrageOpportunities(arbTokens, 0.01, 0.005);
+  
+  if (arbOpportunities.length > 0) {
+    console.log(`⚡ Found ${arbOpportunities.length} arbitrage opportunities on Optimism`);
+    arbOpportunities.forEach(arb => {
+      console.log(`   ${arb.symbol}: ${arb.opportunity.profitPotential.toFixed(2)}% profit (${arb.opportunity.buyDEX} → ${arb.opportunity.sellDEX})`);
+    });
+  }
+} else {
+  console.log(`⚡ Arbitrage opportunities: SuperSwaps not configured`);
+}
 
     } catch (error) {
       console.error("Error in enhanced market analysis:", error)
