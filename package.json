@@ -13,7 +13,6 @@
     "lint": "next lint",
     "test:endpoints": "node scripts/test-endpoints.js",
     "test:bot": "node scripts/test-trading-bot.js",
-    "monitor:bot": "node scripts/monitor-bot.js",
     "validate:config": "node scripts/validate-config.js",
     "test:minimal": "node scripts/minimal-solana-test.js",
     "bot:minimal": "node scripts/minimal-bot-example.js",

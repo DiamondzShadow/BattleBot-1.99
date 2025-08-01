@@ -4,7 +4,7 @@
 
 1. **Fixed Missing Bot Scripts**: Added all the missing bot management commands to `package.json`
 2. **Port Configuration**: Configured the application to run on port 3001 instead of 3000
-3. **External Access**: Set up the application to be accessible via your VM's IP address (<YOUR_VM_IP>)
+3. **External Access**: Set up the application to be accessible via your VM's IP address
 
 ## 🚀 Available Commands
 
@@ -67,7 +67,7 @@ To access from outside the VM:
 
 1. **Update Environment**: Edit `.env.local` and uncomment this line:
    ```
-   API_BASE=http://34.28.132.51:3001
+   API_BASE=http://YOUR_VM_IP:3001
    ```
 
 2. **Start with External Access**:
@@ -75,7 +75,7 @@ To access from outside the VM:
    pnpm run dev:external
    ```
 
-3. **Access via Browser**: http://34.28.132.51:3001
+3. **Access via Browser**: http://YOUR_VM_IP:3001
 
 ### Current Configuration
 - **Development Server**: Running with external binding (0.0.0.0:3001)
@@ -94,6 +94,7 @@ To access from outside the VM:
   - `bot:status`, `bot:start`, `bot:stop`, `bot:restart`, `bot:monitor`
 - Added port-specific startup scripts:
   - `dev:3001`, `dev:external`, `start:3001`, `start:external`
+- Removed duplicate `monitor:bot` script for consistency
 
 ### `scripts/monitor-bot.js` (Updated)
 - Changed default API_BASE from port 3000 to 3001
@@ -111,3 +112,4 @@ To access from outside the VM:
 - All trading limits are set to conservative values for testing
 - The application includes a comprehensive trading dashboard with real-time monitoring
 - Port 3000 is now free and port 3001 is in use
+- Use `bot:monitor` instead of the old `monitor:bot` script for consistency
