@@ -465,12 +465,13 @@ export class ProductionTradingBotService {
       }
 
       // Get Optimism DEX market overview
-      if (this.superSwaps.isAvailable()) {
-        const dexOverview = await this.superSwaps.getDEXMarketOverview()
-        console.log(`💱 Optimism DEX Market: $${(dexOverview.totalLiquidity / 1e9).toFixed(2)}B TVL, $${(dexOverview.totalVolume24h / 1e6).toFixed(0)}M 24h volume`)
-      } else {
-        console.log(`💱 Optimism DEX Market: SuperSwaps not configured`)
-      }
+const superSwapsAvailable = this.superSwaps.isAvailable();
+if (superSwapsAvailable) {
+  const dexOverview = await this.superSwaps.getDEXMarketOverview();
+  console.log(`💱 Optimism DEX Market: $${(dexOverview.totalLiquidity / 1e9).toFixed(2)}B TVL, $${(dexOverview.totalVolume24h / 1e6).toFixed(0)}M 24h volume`);
+} else {
+  console.log(`💱 Optimism DEX Market: SuperSwaps not configured`);
+}
       
       // Find arbitrage opportunities on Optimism
 if (superSwapsAvailable) {
