@@ -4,7 +4,7 @@
 
 1. **Fixed Missing Bot Scripts**: Added all the missing bot management commands to `package.json`
 2. **Port Configuration**: Configured the application to run on port 3001 instead of 3000
-3. **External Access**: Set up the application to be accessible via your VM's IP address (34.28.132.51)
+3. **External Access**: Set up the application to be accessible via your VM's IP address (<YOUR_VM_IP>)
 
 ## 🚀 Available Commands
 
