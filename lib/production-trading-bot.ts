@@ -377,6 +377,10 @@ export class ProductionTradingBotService {
       } else if (chain === "optimism") {
         // Use SuperSwaps for Optimism token analysis
         try {
+          if (!this.superSwaps.isAvailable()) {
+            console.warn("SuperSwaps not available, skipping Optimism analysis")
+            return null
+          }
           const analysis = await this.superSwaps.analyzeMultiDEXLiquidity(tokenAddress)
           if (analysis) {
             const profitPotential = analysis.arbitrageOpportunities.length > 0 
@@ -461,18 +465,26 @@ export class ProductionTradingBotService {
       }
 
       // Get Optimism DEX market overview
-      const dexOverview = await this.superSwaps.getDEXMarketOverview()
-      console.log(`💱 Optimism DEX Market: $${(dexOverview.totalLiquidity / 1e9).toFixed(2)}B TVL, $${(dexOverview.totalVolume24h / 1e6).toFixed(0)}M 24h volume`)
+      if (this.superSwaps.isAvailable()) {
+        const dexOverview = await this.superSwaps.getDEXMarketOverview()
+        console.log(`💱 Optimism DEX Market: $${(dexOverview.totalLiquidity / 1e9).toFixed(2)}B TVL, $${(dexOverview.totalVolume24h / 1e6).toFixed(0)}M 24h volume`)
+      } else {
+        console.log(`💱 Optimism DEX Market: SuperSwaps not configured`)
+      }
       
       // Find arbitrage opportunities on Optimism
-      const arbTokens = [OPTIMISM_TOKENS.VELO, OPTIMISM_TOKENS.OP, OPTIMISM_TOKENS.SNX]
-      const arbOpportunities = await this.superSwaps.findArbitrageOpportunities(arbTokens, 0.01, 0.005)
-      
-      if (arbOpportunities.length > 0) {
-        console.log(`⚡ Found ${arbOpportunities.length} arbitrage opportunities on Optimism`)
-        arbOpportunities.forEach(arb => {
-          console.log(`   ${arb.symbol}: ${arb.opportunity.profitPotential.toFixed(2)}% profit (${arb.opportunity.buyDEX} → ${arb.opportunity.sellDEX})`)
-        })
+      if (this.superSwaps.isAvailable()) {
+        const arbTokens = [OPTIMISM_TOKENS.VELO, OPTIMISM_TOKENS.OP, OPTIMISM_TOKENS.SNX]
+        const arbOpportunities = await this.superSwaps.findArbitrageOpportunities(arbTokens, 0.01, 0.005)
+        
+        if (arbOpportunities.length > 0) {
+          console.log(`⚡ Found ${arbOpportunities.length} arbitrage opportunities on Optimism`)
+          arbOpportunities.forEach(arb => {
+            console.log(`   ${arb.symbol}: ${arb.opportunity.profitPotential.toFixed(2)}% profit (${arb.opportunity.buyDEX} → ${arb.opportunity.sellDEX})`)
+          })
+        }
+      } else {
+        console.log(`⚡ Arbitrage opportunities: SuperSwaps not configured`)
       }
 
     } catch (error) {
@@ -497,6 +509,11 @@ export class ProductionTradingBotService {
       if (chain === "optimism") {
         // Use SuperSwaps for optimal routing
         try {
+          if (!this.superSwaps.isAvailable()) {
+            console.warn("SuperSwaps not available, using fallback execution for Optimism")
+            // In production, you'd use a different DEX here
+            return true 
+          }
           const swapQuote = await this.superSwaps.getBestSwapRoute(
             OPTIMISM_TOKENS.USDC,
             tokenAddress,

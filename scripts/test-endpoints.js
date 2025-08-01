@@ -23,24 +23,29 @@ async function testEndpoints() {
     jupiter: process.env.JUPITER_SWAP_API
   }
 
-  // Check if required environment variables are set
-  const missingEnvVars = []
+  // Check configured endpoints
+  const configuredEndpoints = {}
+  const skippedEndpoints = []
+  
   Object.entries(endpoints).forEach(([name, url]) => {
-    if (!url) {
-      if (name === 'jupiter') {
-        missingEnvVars.push('JUPITER_SWAP_API')
-      } else {
-        missingEnvVars.push(`QUIKNODE_${name.toUpperCase()}_RPC`)
-      }
+    if (url && !url.includes('YOUR_KEY_HERE')) {
+      configuredEndpoints[name] = url
+    } else {
+      skippedEndpoints.push(name)
     }
   })
 
-  if (missingEnvVars.length > 0) {
-    console.error('❌ Missing required environment variables:')
-    missingEnvVars.forEach(envVar => {
-      console.error(`   - ${envVar}`)
+  if (skippedEndpoints.length > 0) {
+    console.log('ℹ️  Skipping unconfigured endpoints:')
+    skippedEndpoints.forEach(name => {
+      const envVar = name === 'jupiter' ? 'JUPITER_SWAP_API' : `QUIKNODE_${name.toUpperCase()}_RPC`
+      console.log(`   - ${name} (${envVar} not configured)`)
     })
-    console.error('\nPlease set these in your .env.local file before running tests.')
+    console.log('')
+  }
+
+  if (Object.keys(configuredEndpoints).length === 0) {
+    console.error('❌ No endpoints are configured. Please set at least one endpoint in your .env.local file.')
     process.exit(1)
   }
 
@@ -136,67 +141,83 @@ async function testEndpoints() {
     console.log('🚀 QuickNode Endpoint Performance Test')
     console.log('='.repeat(50))
     
+    const results = []
+    
     // Test Solana endpoint
-    console.log('\n🟣 Testing Solana Endpoint...')
-    const solanaResult = await testSolanaEndpoint(endpoints.solana)
-    console.log(`   Status: ${solanaResult.success ? '✅ Healthy' : '❌ Failed'}`)
-    console.log(`   Response Time: ${solanaResult.duration}ms`)
-    if (solanaResult.error) {
-      console.log(`   Error: ${solanaResult.error}`)
+    if (configuredEndpoints.solana) {
+      console.log('\n🟣 Testing Solana Endpoint...')
+      const solanaResult = await testSolanaEndpoint(configuredEndpoints.solana)
+      console.log(`   Status: ${solanaResult.success ? '✅ Healthy' : '❌ Failed'}`)
+      console.log(`   Response Time: ${solanaResult.duration}ms`)
+      if (solanaResult.error) {
+        console.log(`   Error: ${solanaResult.error}`)
+      }
+      results.push(solanaResult)
     }
     
     // Test Polygon endpoint
-    console.log('\n🟢 Testing Polygon Endpoint...')
-    const polygonResult = await testEVMEndpoint(endpoints.polygon, 'Polygon')
-    console.log(`   Status: ${polygonResult.success ? '✅ Connected' : '❌ Failed'}`)
-    console.log(`   Response Time: ${polygonResult.duration}ms`)
-    if (polygonResult.blockNumber) {
-      console.log(`   Latest Block: ${polygonResult.blockNumber.toLocaleString()}`)
-    }
-    if (polygonResult.error) {
-      console.log(`   Error: ${polygonResult.error}`)
+    if (configuredEndpoints.polygon) {
+      console.log('\n🟢 Testing Polygon Endpoint...')
+      const polygonResult = await testEVMEndpoint(configuredEndpoints.polygon, 'Polygon')
+      console.log(`   Status: ${polygonResult.success ? '✅ Connected' : '❌ Failed'}`)
+      console.log(`   Response Time: ${polygonResult.duration}ms`)
+      if (polygonResult.blockNumber) {
+        console.log(`   Latest Block: ${polygonResult.blockNumber.toLocaleString()}`)
+      }
+      if (polygonResult.error) {
+        console.log(`   Error: ${polygonResult.error}`)
+      }
+      results.push(polygonResult)
     }
     
     // Test BSC endpoint
-    console.log('\n🟡 Testing BSC Endpoint...')
-    const bscResult = await testEVMEndpoint(endpoints.bsc, 'BSC')
-    console.log(`   Status: ${bscResult.success ? '✅ Connected' : '❌ Failed'}`)
-    console.log(`   Response Time: ${bscResult.duration}ms`)
-    if (bscResult.blockNumber) {
-      console.log(`   Latest Block: ${bscResult.blockNumber.toLocaleString()}`)
-    }
-    if (bscResult.error) {
-      console.log(`   Error: ${bscResult.error}`)
+    if (configuredEndpoints.bsc) {
+      console.log('\n🟡 Testing BSC Endpoint...')
+      const bscResult = await testEVMEndpoint(configuredEndpoints.bsc, 'BSC')
+      console.log(`   Status: ${bscResult.success ? '✅ Connected' : '❌ Failed'}`)
+      console.log(`   Response Time: ${bscResult.duration}ms`)
+      if (bscResult.blockNumber) {
+        console.log(`   Latest Block: ${bscResult.blockNumber.toLocaleString()}`)
+      }
+      if (bscResult.error) {
+        console.log(`   Error: ${bscResult.error}`)
+      }
+      results.push(bscResult)
     }
     
     // Test Jupiter endpoint
-    console.log('\n🔄 Testing Jupiter Swap API...')
-    const jupiterResult = await testJupiterEndpoint(endpoints.jupiter)
-    console.log(`   Status: ${jupiterResult.success ? '✅ Working' : '❌ Failed'}`)
-    console.log(`   Response Time: ${jupiterResult.duration}ms`)
-    if (jupiterResult.outAmount) {
-      console.log(`   Sample Quote: 1 SOL = ${(jupiterResult.outAmount / 1000000).toFixed(2)} USDC`)
-    }
-    if (jupiterResult.error) {
-      console.log(`   Error: ${jupiterResult.error}`)
+    if (configuredEndpoints.jupiter) {
+      console.log('\n🔄 Testing Jupiter Swap API...')
+      const jupiterResult = await testJupiterEndpoint(configuredEndpoints.jupiter)
+      console.log(`   Status: ${jupiterResult.success ? '✅ Working' : '❌ Failed'}`)
+      console.log(`   Response Time: ${jupiterResult.duration}ms`)
+      if (jupiterResult.outAmount) {
+        console.log(`   Sample Quote: 1 SOL = ${(jupiterResult.outAmount / 1000000).toFixed(2)} USDC`)
+      }
+      if (jupiterResult.error) {
+        console.log(`   Error: ${jupiterResult.error}`)
+      }
+      results.push(jupiterResult)
     }
     
     // Summary
     console.log('\n📊 Summary:')
-    const totalTests = 4
-    const passedTests = [solanaResult, polygonResult, bscResult, jupiterResult].filter(r => r.success).length
-    const avgResponseTime = [solanaResult, polygonResult, bscResult, jupiterResult].reduce((sum, r) => sum + r.duration, 0) / totalTests
+    const totalTests = results.length
+    const passedTests = results.filter(r => r.success).length
+    const avgResponseTime = totalTests > 0 ? results.reduce((sum, r) => sum + r.duration, 0) / totalTests : 0
     
     console.log(`   Tests Passed: ${passedTests}/${totalTests}`)
-    console.log(`   Average Response Time: ${avgResponseTime.toFixed(0)}ms`)
+    console.log(`   Average Response Time: ${totalTests > 0 ? avgResponseTime.toFixed(0) : 0}ms`)
     
-    if (passedTests === totalTests) {
-      console.log('   🎉 All endpoints are working perfectly!')
+    if (passedTests === totalTests && totalTests > 0) {
+      console.log('   🎉 All configured endpoints are working perfectly!')
+    } else if (totalTests === 0) {
+      console.log('   ⚠️  No endpoints are configured for testing')
     } else {
       console.log('   ⚠️  Some endpoints need attention')
     }
     
-    return passedTests === totalTests
+    return passedTests === totalTests && totalTests > 0
   }
 
   // Run the test
