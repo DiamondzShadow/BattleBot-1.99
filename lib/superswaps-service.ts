@@ -133,7 +133,8 @@ export class SuperSwapsService {
     // Using QuickNode Optimism endpoint with SuperSwaps add-on
     this.baseUrl = process.env.QUIKNODE_OPTIMISM_RPC
     if (!this.baseUrl) {
-      throw new Error("QUIKNODE_OPTIMISM_RPC environment variable is required for SuperSwaps service")
+      console.warn("QUIKNODE_OPTIMISM_RPC not configured, SuperSwaps features will be disabled")
+      this.baseUrl = ""
     }
     this.addonPath = "addon/1050/v1" // SuperSwaps add-on path
   }
@@ -143,6 +144,11 @@ export class SuperSwapsService {
       SuperSwapsService.instance = new SuperSwapsService()
     }
     return SuperSwapsService.instance
+  }
+
+  // Check if SuperSwaps is available (OPTIMISM_RPC configured)
+  public isAvailable(): boolean {
+    return this.baseUrl !== ""
   }
 
   /**
