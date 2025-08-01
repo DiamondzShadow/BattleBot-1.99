@@ -4,15 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:3001": "next dev -p 3001",
+    "dev:external": "next dev -p 3001 -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
+    "start:3001": "next start -p 3001",
+    "start:external": "next start -p 3001 -H 0.0.0.0",
     "lint": "next lint",
     "test:endpoints": "node scripts/test-endpoints.js",
     "test:bot": "node scripts/test-trading-bot.js",
     "monitor:bot": "node scripts/monitor-bot.js",
     "validate:config": "node scripts/validate-config.js",
     "test:minimal": "node scripts/minimal-solana-test.js",
-    "bot:minimal": "node scripts/minimal-bot-example.js"
+    "bot:minimal": "node scripts/minimal-bot-example.js",
+    "bot:status": "node scripts/monitor-bot.js status",
+    "bot:start": "node scripts/monitor-bot.js start",
+    "bot:stop": "node scripts/monitor-bot.js stop",
+    "bot:restart": "node scripts/monitor-bot.js restart",
+    "bot:monitor": "node scripts/monitor-bot.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
