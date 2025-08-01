@@ -143,61 +143,65 @@ async function testEndpoints() {
     
     const results = []
     
-    // Test Solana endpoint
-    if (configuredEndpoints.solana) {
-      console.log('\n🟣 Testing Solana Endpoint...')
-      const solanaResult = await testSolanaEndpoint(configuredEndpoints.solana)
-      console.log(`   Status: ${solanaResult.success ? '✅ Healthy' : '❌ Failed'}`)
-      console.log(`   Response Time: ${solanaResult.duration}ms`)
-      if (solanaResult.error) {
-        console.log(`   Error: ${solanaResult.error}`)
+    // Define test configurations for each endpoint
+    const testDefinitions = [
+      {
+        name: 'solana',
+        logName: 'Solana Endpoint',
+        icon: '🟣',
+        testFn: testSolanaEndpoint,
+        url: configuredEndpoints.solana,
+        formatResult: (r) => `Status: ${r.success ? '✅ Healthy' : '❌ Failed'}`,
+        formatExtra: (r) => null
+      },
+      {
+        name: 'polygon',
+        logName: 'Polygon Endpoint', 
+        icon: '🟢',
+        testFn: (url) => testEVMEndpoint(url, 'Polygon'),
+        url: configuredEndpoints.polygon,
+        formatResult: (r) => `Status: ${r.success ? '✅ Connected' : '❌ Failed'}`,
+        formatExtra: (r) => r.blockNumber ? `   Latest Block: ${r.blockNumber.toLocaleString()}` : null
+      },
+      {
+        name: 'bsc',
+        logName: 'BSC Endpoint',
+        icon: '🟡', 
+        testFn: (url) => testEVMEndpoint(url, 'BSC'),
+        url: configuredEndpoints.bsc,
+        formatResult: (r) => `Status: ${r.success ? '✅ Connected' : '❌ Failed'}`,
+        formatExtra: (r) => r.blockNumber ? `   Latest Block: ${r.blockNumber.toLocaleString()}` : null
+      },
+      {
+        name: 'jupiter',
+        logName: 'Jupiter Swap API',
+        icon: '🔄',
+        testFn: testJupiterEndpoint,
+        url: configuredEndpoints.jupiter,
+        formatResult: (r) => `Status: ${r.success ? '✅ Working' : '❌ Failed'}`,
+        formatExtra: (r) => r.outAmount ? `   Sample Quote: 1 SOL = ${(r.outAmount / 1000000).toFixed(2)} USDC` : null
       }
-      results.push(solanaResult)
-    }
-    
-    // Test Polygon endpoint
-    if (configuredEndpoints.polygon) {
-      console.log('\n🟢 Testing Polygon Endpoint...')
-      const polygonResult = await testEVMEndpoint(configuredEndpoints.polygon, 'Polygon')
-      console.log(`   Status: ${polygonResult.success ? '✅ Connected' : '❌ Failed'}`)
-      console.log(`   Response Time: ${polygonResult.duration}ms`)
-      if (polygonResult.blockNumber) {
-        console.log(`   Latest Block: ${polygonResult.blockNumber.toLocaleString()}`)
+    ]
+
+    // Execute tests for each configured endpoint
+    for (const testDef of testDefinitions) {
+      if (testDef.url) {
+        console.log(`\n${testDef.icon} Testing ${testDef.logName}...`)
+        const result = await testDef.testFn(testDef.url)
+        console.log(`   ${testDef.formatResult(result)}`)
+        console.log(`   Response Time: ${result.duration}ms`)
+        
+        const extra = testDef.formatExtra(result)
+        if (extra) {
+          console.log(extra)
+        }
+        
+        if (result.error) {
+          console.log(`   Error: ${result.error}`)
+        }
+        
+        results.push(result)
       }
-      if (polygonResult.error) {
-        console.log(`   Error: ${polygonResult.error}`)
-      }
-      results.push(polygonResult)
-    }
-    
-    // Test BSC endpoint
-    if (configuredEndpoints.bsc) {
-      console.log('\n🟡 Testing BSC Endpoint...')
-      const bscResult = await testEVMEndpoint(configuredEndpoints.bsc, 'BSC')
-      console.log(`   Status: ${bscResult.success ? '✅ Connected' : '❌ Failed'}`)
-      console.log(`   Response Time: ${bscResult.duration}ms`)
-      if (bscResult.blockNumber) {
-        console.log(`   Latest Block: ${bscResult.blockNumber.toLocaleString()}`)
-      }
-      if (bscResult.error) {
-        console.log(`   Error: ${bscResult.error}`)
-      }
-      results.push(bscResult)
-    }
-    
-    // Test Jupiter endpoint
-    if (configuredEndpoints.jupiter) {
-      console.log('\n🔄 Testing Jupiter Swap API...')
-      const jupiterResult = await testJupiterEndpoint(configuredEndpoints.jupiter)
-      console.log(`   Status: ${jupiterResult.success ? '✅ Working' : '❌ Failed'}`)
-      console.log(`   Response Time: ${jupiterResult.duration}ms`)
-      if (jupiterResult.outAmount) {
-        console.log(`   Sample Quote: 1 SOL = ${(jupiterResult.outAmount / 1000000).toFixed(2)} USDC`)
-      }
-      if (jupiterResult.error) {
-        console.log(`   Error: ${jupiterResult.error}`)
-      }
-      results.push(jupiterResult)
     }
     
     // Summary
